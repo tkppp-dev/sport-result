@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 @RestControllerAdvice
 class GlobalControllerExceptionHandler {
     private val logger = LoggerFactory.getLogger(GlobalControllerExceptionHandler::class.java)
-    
+
     @ExceptionHandler(value = [RuntimeException::class])
     fun handlingUnexpectedException(ex: Exception): ResponseEntity<ErrorResponseDto> {
         val errorCode = ErrorCode.INTERNAL_SERVER_ERROR

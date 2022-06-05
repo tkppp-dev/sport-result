@@ -1,9 +1,12 @@
-var express = require('express');
-var router = express.Router();
+import express from 'express'
+import { getYearlyKboSchedule } from '../service/kbo_crawling_service.js'
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+const router = express.Router();
+
+router.get('/', async function(req, res, next) {
+  const result = await getYearlyKboSchedule(2022)
+  console.log(result)
+  res.send(result)
 });
 
-module.exports = router;
+export default router

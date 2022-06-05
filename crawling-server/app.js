@@ -1,28 +1,40 @@
-const createError = require('http-errors');
-const express = require('express');
-const path = require('path');
-const cookieParser = require('cookie-parser');
-const logger = require('morgan');
-const indexRouter = require('./routes/index');
+import express from 'express'
+import http from 'http'
+import cookieParser from 'cookie-parser'
+import logger from 'morgan'
+import indexRouter from './routes/index.js'
+
 const app = express();
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-
 app.use('/', indexRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  next(createError(404));
+  const err = new Error()
+  err.staus = 404
+  err.message = 'REQUEST_NOT_FOUND'
+  next(err);
 });
 
 // error handler
 app.use(function(err, req, res, next) {
   console.error('Error Code : ' + err.status)
-  console.error(err.message)
+  console.error('Error Message : ' + err.message)
+
+  res.status(err.status)
+  res.send(err)
 });
 
-module.exports = app;
+const port = process.env.PORT || '3000'
+app.set('port', port);
+
+const server = http.createServer(app);
+server.listen(port, () => {
+  console.log('Server successfully load at PORT : ' + port)
+});
+
+export default app

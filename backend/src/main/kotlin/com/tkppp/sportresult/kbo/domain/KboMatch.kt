@@ -17,7 +17,7 @@ class KboMatch(
     @Column(nullable = false)
     val matchDate: LocalDate,
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     val startTime: LocalTime,
 
     @Column(nullable = false)

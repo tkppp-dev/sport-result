@@ -4,5 +4,6 @@ enum class MatchStatus {
     BEFORE_MATCH,
     ON_GOING,
     AFTER_MATCH,
-    CANCELED
+    CANCELED,
+    NO_MATCH,
 }

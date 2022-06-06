@@ -18,7 +18,7 @@ class KboMatch(
     val matchDate: LocalDate,
 
     @Column(nullable = true)
-    val startTime: LocalTime,
+    val startTime: LocalTime? = null,
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -28,16 +28,17 @@ class KboMatch(
     @ColumnDefault("null")
     var matchProgress: String? = null,
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     @Enumerated(EnumType.STRING)
-    val home: KboTeam,
+    val home: KboTeam?,
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     @Enumerated(EnumType.STRING)
-    val away: KboTeam,
+    val away: KboTeam?,
 
     @Column(nullable = false)
     var homeScore: Int = 0,
+
     @Column(nullable = false)
     var awayScore: Int = 0,
 ) {

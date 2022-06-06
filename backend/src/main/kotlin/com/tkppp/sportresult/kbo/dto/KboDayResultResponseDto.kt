@@ -6,11 +6,11 @@ import com.tkppp.sportresult.kbo.util.MatchStatus
 import java.time.LocalTime
 
 data class KboDayResultResponseDto(
-    val startTime: LocalTime,
+    val startTime: LocalTime?,
     val matchStatus: MatchStatus,
     val matchProcess: String?,
-    val home: KboTeam,
-    val away: KboTeam,
+    val home: KboTeam?,
+    val away: KboTeam?,
     val homeScore: Int,
     val awayScore: Int
 ) {

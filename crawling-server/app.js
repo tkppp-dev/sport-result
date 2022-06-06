@@ -25,7 +25,7 @@ app.use(function(err, req, res, next) {
   console.error('Error Code : ' + err.status)
   console.error('Error Message : ' + err.message)
 
-  res.status(err.status)
+  res.status(500)
   res.send(err)
 });
 

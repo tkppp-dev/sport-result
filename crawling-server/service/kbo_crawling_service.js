@@ -1,7 +1,7 @@
 import axios from 'axios';
 import cheerio from 'cheerio';
 
-export async function getYearlyKboSchedule(year) {
+export async function getYearlyKboSchedule(year, next) {
   try{
     const url = `https://sports.news.naver.com/kbaseball/schedule/index?month=06&year=${year}`;
     const html = await axios.get(url);
@@ -22,6 +22,7 @@ export async function getYearlyKboSchedule(year) {
     return yearlySchedule
   } catch(err){
     console.error(err)
+    next(err)
   }
 }
 
@@ -35,22 +36,29 @@ async function crawlingKboSchedule(year, month) {
     const matchSchedule = $('#calendarWrap')
       .children()
       .map((i, node) => {
-        const matchDate = [year, parseInt(month), i + 1];
+        const matchDate = [parseInt(year), parseInt(month), i + 1];
         const matchInfo = $(node)
           .find('div table tbody')
           .children()
           .map((idx, tr) => {
-            const startTime = $(tr).find('.td_hour').text().split(':');
+            let startTime = $(tr).find('.td_hour').text()
             const home = $(tr).find('.team_lft').text();
             const away = $(tr).find('.team_rgt').text();
             let score = $(tr).find('.td_score').text();
-            const matchStatus =
-              $(tr).find('.suspended').text() == '경기취소'
-                ? 'CANCELED'
-                : (score == 'VS' ? 'BEFORE_MATCH' : 'AFTER_MATCH');
+            let matchStatus
+
+            startTime = startTime == '-' ? null : startTime.split(':')
+            if($(tr).find('.suspended').text() == '경기취소'){
+              matchStatus = 'CANCELED'
+            } else if (startTime == null){
+              matchStatus = 'NO_MATCH'
+            } else {
+              matchStatus = (score == 'VS' ? 'BEFORE_MATCH' : 'AFTER_MATCH');
+            }
             score = score == 'VS' ? [0, 0] : score.split(':');
+
             return {
-              startTime: [startTime[0], startTime[1]],
+              startTime: startTime,
               home,
               away,
               matchStatus,
@@ -66,7 +74,7 @@ async function crawlingKboSchedule(year, month) {
       }).toArray();
 
     return matchSchedule;
-  } catch (error) {
-    console.error(error);
+  } catch (err) {
+    throw err
   }
 }

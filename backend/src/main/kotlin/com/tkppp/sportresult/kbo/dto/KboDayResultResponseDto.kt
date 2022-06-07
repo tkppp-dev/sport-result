@@ -2,13 +2,14 @@ package com.tkppp.sportresult.kbo.dto
 
 import com.tkppp.sportresult.kbo.domain.KboMatch
 import com.tkppp.sportresult.kbo.util.KboTeam
+import com.tkppp.sportresult.kbo.util.MatchProgress
 import com.tkppp.sportresult.kbo.util.MatchStatus
 import java.time.LocalTime
 
 data class KboDayResultResponseDto(
     val startTime: LocalTime?,
     val matchStatus: MatchStatus,
-    val matchProcess: String?,
+    val matchProcess: MatchProgress?,
     val home: KboTeam?,
     val away: KboTeam?,
     val homeScore: Int,

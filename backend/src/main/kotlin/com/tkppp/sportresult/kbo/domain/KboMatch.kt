@@ -1,6 +1,7 @@
 package com.tkppp.sportresult.kbo.domain
 
 import com.tkppp.sportresult.kbo.util.KboTeam
+import com.tkppp.sportresult.kbo.util.MatchProgress
 import com.tkppp.sportresult.kbo.util.MatchStatus
 import org.hibernate.annotations.ColumnDefault
 import java.time.LocalDate
@@ -25,8 +26,8 @@ class KboMatch(
     var matchStatus: MatchStatus,
 
     @Column(nullable = true)
-    @ColumnDefault("null")
-    var matchProgress: String? = null,
+    @Enumerated(EnumType.STRING)
+    var matchProgress: MatchProgress? = null,
 
     @Column(nullable = true)
     @Enumerated(EnumType.STRING)

@@ -3,7 +3,7 @@ server:
 
 spring:
   profiles:
-    active: dev
+    active: prod
 
 ---
 spring:
@@ -24,3 +24,18 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
+
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://mysql-rds.cuwguiwtvuh1.ap-northeast-2.rds.amazonaws.com:3306/sport_result
+    username: tkppp
+    password: tiffndla0423
+  jpa:
+    hibernate:
+      ddl-auto: update
+

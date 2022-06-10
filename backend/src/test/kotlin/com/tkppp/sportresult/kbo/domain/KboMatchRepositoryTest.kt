@@ -8,11 +8,12 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.*
 import org.springframework.data.repository.findByIdOrNull
+import org.springframework.test.context.ActiveProfiles
 import java.time.LocalDate
 import java.time.LocalTime
 
-
 @DataJpaTest
+@ActiveProfiles("dev")
 class KboMatchRepositoryTest(
     @Autowired private val kboMatchRepository: KboMatchRepository
 ) {

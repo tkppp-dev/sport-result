@@ -3,6 +3,7 @@ package com.tkppp.sportresult.kbo.service
 import com.tkppp.sportresult.kbo.domain.KboRank
 import com.tkppp.sportresult.kbo.domain.KboRankRepository
 import com.tkppp.sportresult.kbo.dto.KboRankDto
+import com.tkppp.sportresult.kbo.dto.KboRankResponseDto
 import org.springframework.http.HttpMethod
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
@@ -35,7 +36,7 @@ class KboRankService(
         if (entities.isEmpty()) insertKboRank(kboRankDtos)
         else {
             val updated = entities.map {
-                val rankDto = kboRankDtos[it.rank - 1]
+                val rankDto = kboRankDtos[it.ranking - 1]
                 it.name = rankDto.name
                 it.win = rankDto.win
                 it.draw = rankDto.draw
@@ -46,5 +47,9 @@ class KboRankService(
             }
             kboRankRepository.saveAll(updated)
         }
+    }
+
+    fun getKboRankList(): List<KboRankResponseDto>{
+        return kboRankRepository.findAll().map { KboRankResponseDto(it) }
     }
 }

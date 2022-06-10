@@ -13,13 +13,13 @@ class KboDayResultController(
     private val kboDayResultService: KboDayResultService
 ) {
 
-    @GetMapping("/")
+    @GetMapping
     fun returnDayResult(): ResponseEntity<List<KboDayResultResponseDto>>{
         val response = kboDayResultService.getDayResult()
         return ResponseEntity(response, HttpStatus.OK)
     }
 
-    @PutMapping("/")
+    @PutMapping
     fun updateDayMatch(@RequestBody dayMatchData: List<KboDayMatchRequestDto>): ResponseEntity<Any> {
         kboDayResultService.updateDayMatch(dayMatchData)
         return ResponseEntity(HttpStatus.NO_CONTENT)

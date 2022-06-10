@@ -17,7 +17,11 @@ class KboDayResultService(
 
     fun getDayResult(): List<KboDayResultResponseDto> {
         val entity = kboMatchRepository.findKboDayMatch()
-        return entity.map{ KboDayResultResponseDto(it) }
+        return if (entity[0].matchStatus == NO_MATCH) {
+            listOf()
+        } else {
+            entity.map { KboDayResultResponseDto(it) }
+        }
     }
 
     fun updateDayMatch(matches: List<KboDayMatchRequestDto>) {
@@ -25,19 +29,19 @@ class KboDayResultService(
         val todayMatches = kboMatchRepository.findKboMatchByMatchDate(date)
 
         for (todayMatch in todayMatches) {
-            when(todayMatch.matchStatus){
+            when (todayMatch.matchStatus) {
                 BEFORE_MATCH, ON_GOING -> {
-                    for (match in matches){
-                        if (match.home == todayMatch.home && match.away == todayMatch.away){
+                    for (match in matches) {
+                        if (match.home == todayMatch.home && match.away == todayMatch.away) {
                             todayMatch.matchProgress = match.matchProgress
                             todayMatch.homeScore = match.homeScore
                             todayMatch.awayScore = match.awayScore
 
-                            when(todayMatch.matchProgress){
+                            when (todayMatch.matchProgress) {
                                 MATCH_BEFORE -> {}
                                 MATCH_END -> todayMatch.matchStatus = AFTER_MATCH
                                 MatchProgress.CANCELED -> todayMatch.matchStatus = MatchStatus.CANCELED
-                                else -> if(todayMatch.matchStatus == BEFORE_MATCH) todayMatch.matchStatus = ON_GOING
+                                else -> if (todayMatch.matchStatus == BEFORE_MATCH) todayMatch.matchStatus = ON_GOING
                             }
 
                             kboMatchRepository.save(todayMatch)

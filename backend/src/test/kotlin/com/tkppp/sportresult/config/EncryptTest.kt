@@ -15,7 +15,7 @@ class EncryptTest(
     @DisplayName("설정파일 암호화 및 테스트")
     fun configEncrypt(){
         // given
-        val content = ""
+        val content = "tiffndla0423"
 
         // when
         val encryptResult = encryptor.encrypt(content)

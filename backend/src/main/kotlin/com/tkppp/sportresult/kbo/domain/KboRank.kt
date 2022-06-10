@@ -9,7 +9,8 @@ class KboRank(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
 
-    val rank: Int,
+    @Column(nullable = false)
+    val ranking: Int,
 
     @Enumerated(EnumType.STRING)
     var name: KboTeam,

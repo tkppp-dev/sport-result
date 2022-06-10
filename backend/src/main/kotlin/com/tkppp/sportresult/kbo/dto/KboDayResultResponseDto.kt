@@ -9,9 +9,9 @@ import java.time.LocalTime
 data class KboDayResultResponseDto(
     val startTime: LocalTime?,
     val matchStatus: MatchStatus,
-    val matchProcess: MatchProgress?,
-    val home: KboTeam?,
-    val away: KboTeam?,
+    val matchProgress: MatchProgress?,
+    val home: String?,
+    val away: String?,
     val homeScore: Int,
     val awayScore: Int
 ) {
@@ -19,9 +19,9 @@ data class KboDayResultResponseDto(
     constructor(entity: KboMatch) : this(
         startTime = entity.startTime,
         matchStatus = entity.matchStatus,
-        matchProcess = entity.matchProgress,
-        home = entity.home,
-        away = entity.away,
+        matchProgress = entity.matchProgress,
+        home = entity.home?.fullName,
+        away = entity.away?.fullName,
         homeScore = entity.homeScore,
         awayScore = entity.awayScore
     )

@@ -16,7 +16,7 @@ data class KboRankDto(
 ) {
     fun toEntity() =
         KboRank(
-            rank = rank,
+            ranking = rank,
             name = name,
             played = played,
             win = win,

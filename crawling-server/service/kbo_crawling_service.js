@@ -24,8 +24,8 @@ export async function getDayMatchResult(next) {
         }
       }).toArray()
     
-    console.log(matchSummarys)
-    return matchSummarys
+    await axios.put("http://localhost:8080/api/kbo/day", matchSummarys)
+    return matchSummarys.map ((match) => match.matchProgress)
   } catch(err){
     console.error(err)
     next(err)
@@ -61,7 +61,7 @@ export async function getKboTeamRanking(next) {
         }
       }).toArray()
     
-    return teamRank
+    await axios.put("http://localhost:8080/api/kbo/rank", teamRank)
   } catch(err){
     console.error(err)
     next(err)

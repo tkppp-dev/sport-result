@@ -3,8 +3,10 @@ import http from 'http'
 import cookieParser from 'cookie-parser'
 import logger from 'morgan'
 import indexRouter from './routes/index.js'
+import dotenv from 'dotenv'
 
 const app = express();
+dotenv.config()
 
 app.use(logger('dev'));
 app.use(express.json());

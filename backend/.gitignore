@@ -36,6 +36,6 @@ out/
 ### VS Code ###
 .vscode/
 
-# 암호화 테스트 제외
+# 암호화 및 테스트 제외
 JasyptConfig.kt
 EncryptTest.kt

@@ -17,7 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
 
 @SpringBootTest
-@ActiveProfiles("prod")
+@ActiveProfiles("dev")
 class KboScheduleIntegrationTest(
     @Autowired private val kboScheduleController: KboScheduleController,
     @Autowired private val kboDayResultController: KboDayResultController,
@@ -43,33 +43,5 @@ class KboScheduleIntegrationTest(
     fun getKboDayMatchResult(){
         val result = kboDayResultController.returnDayResult()
         print(result.body)
-    }
-
-    @Serializable
-    data class TripleJson (
-        val fullname: Triple<String, String, Int>
-    )
-
-    @Test
-    @DisplayName("JSON 직렬화/역직렬화 테스트 - Kotlinx.serialization")
-    fun jsonTest() {
-        val me = TripleJson(Triple("Park", "Taekyeong", 26))
-        val serialize = Json.encodeToString(me)
-        println(serialize)
-
-        val deserialize = Json.decodeFromString<TripleJson>(serialize)
-        println(deserialize)
-    }
-
-    @Test
-    @DisplayName("JSON 직렬화/역직렬화 테스트 - Jackson")
-    fun jsonTestWithJackson() {
-        val mapper = ObjectMapper().registerKotlinModule()
-        val me = TripleJson(Triple("Park", "Taekyeong", 26))
-        val serialize = mapper.writeValueAsString(me)
-        println(serialize)
-
-        val deserialize = mapper.readValue<TripleJson>(serialize)
-        println(deserialize)
     }
 }

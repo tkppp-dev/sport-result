@@ -1,5 +1,6 @@
 package com.tkppp.sportresult.kbo.service
 
+import com.tkppp.sportresult.kbo.domain.KboMatch
 import com.tkppp.sportresult.kbo.domain.KboMatchRepository
 import com.tkppp.sportresult.kbo.dto.KboDayMatchRequestDto
 import com.tkppp.sportresult.kbo.dto.KboDayResultResponseDto
@@ -17,14 +18,14 @@ class KboDayResultService(
 
     fun getDayResult(): List<KboDayResultResponseDto> {
         val entity = kboMatchRepository.findKboDayMatch()
-        return if (entity[0].matchStatus == NO_MATCH) {
+        return if (entity.isNotEmpty() && entity[0].matchStatus == NO_MATCH) {
             listOf()
         } else {
             entity.map { KboDayResultResponseDto(it) }
         }
     }
 
-    fun updateDayMatch(matches: List<KboDayMatchRequestDto>) {
+    fun updateDayMatch(matches: List<KboDayMatchRequestDto>): List<KboMatch> {
         val date = LocalDate.now()
         val todayMatches = kboMatchRepository.findKboMatchByMatchDate(date)
 
@@ -52,6 +53,7 @@ class KboDayResultService(
                 else -> {}
             }
         }
+        return todayMatches
     }
 
 }

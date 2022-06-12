@@ -15,9 +15,9 @@ class GlobalControllerExceptionHandler {
         val errorCode = ex.errorCode
         logger.error("${errorCode.name} - ${ex.message}")
         return if(errorCode.status == HttpStatus.INTERNAL_SERVER_ERROR){
-            return ResponseEntity(ErrorResponseDto(errorCode.status, ErrorCode.INTERNAL_SERVER_ERROR.message), errorCode.status)
+            ResponseEntity(ErrorResponseDto(errorCode.status, ErrorCode.INTERNAL_SERVER_ERROR.message), errorCode.status)
         } else {
-            return ResponseEntity(ErrorResponseDto(errorCode.status, errorCode.message), errorCode.status)
+            ResponseEntity(ErrorResponseDto(errorCode.status, errorCode.message), errorCode.status)
         }
     }
 

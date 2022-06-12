@@ -2,6 +2,7 @@ package com.tkppp.sportresult.kbo.service
 
 import com.tkppp.sportresult.kbo.domain.KboMatchRepository
 import com.tkppp.sportresult.kbo.util.MatchStatus
+import org.slf4j.LoggerFactory
 import org.springframework.http.HttpMethod
 import org.springframework.scheduling.TaskScheduler
 import org.springframework.scheduling.annotation.Scheduled
@@ -20,7 +21,7 @@ class KboSchedulingService(
     private val kboMatchRepository: KboMatchRepository,
     private val restTemplate: RestTemplate,
 ) {
-
+    private val logger = LoggerFactory.getLogger(KboSchedulingService::class.java)
     private val dayResultUrl = "http://localhost:3000/api/kbo/day"
     private val rankUrl = "http://localhost:3000/api/kbo/rank"
     var initialScheduler: ScheduledFuture<*>? = null
@@ -30,7 +31,7 @@ class KboSchedulingService(
     fun init() {
         setDayMatchStartTime()
         val now = LocalDateTime.now()
-        val tomorrow = LocalDateTime.of(now.toLocalDate().plusDays(1), LocalTime.of(0,0,0))
+        val tomorrow = LocalDateTime.of(now.toLocalDate().plusDays(1), LocalTime.of(0, 0, 0))
         if (now.plusMinutes(1) < tomorrow) {
             dayMatchStart?.let {
                 val nowTime = now.toLocalTime()
@@ -42,7 +43,11 @@ class KboSchedulingService(
                 }
 
                 initialScheduler = scheduler.schedule({
-                    restTemplate.exchange<Any>(dayResultUrl, HttpMethod.GET, null)
+                    try {
+                        restTemplate.exchange<Any>(dayResultUrl, HttpMethod.GET, null)
+                    } catch (ex: Exception) {
+                        logger.error(ex.message)
+                    }
                 }, CronTrigger(cron))
             }
         }
@@ -63,7 +68,11 @@ class KboSchedulingService(
 
     fun sendMatchResultEvent(baseTime: LocalTime) {
         if (initialScheduler == null && baseTime == dayMatchStart) {
-            restTemplate.exchange<Any>(dayResultUrl, HttpMethod.GET, null)
+            try {
+                restTemplate.exchange<Any>(dayResultUrl, HttpMethod.GET, null)
+            } catch (ex: Exception) {
+                logger.error(ex.message)
+            }
         }
     }
 
@@ -89,7 +98,11 @@ class KboSchedulingService(
     @Scheduled(cron = "0 0,30 21-23 * * ?")
     fun sendRankEventToCrawlingServer() {
         if (dayMatchStart != null) {
-            restTemplate.exchange<Any>(rankUrl, HttpMethod.GET, null)
+            try {
+                restTemplate.exchange<Any>(rankUrl, HttpMethod.GET, null)
+            } catch (ex: Exception) {
+                logger.error(ex.message)
+            }
         }
     }
 

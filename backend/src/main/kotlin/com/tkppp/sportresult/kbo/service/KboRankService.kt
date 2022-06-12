@@ -7,6 +7,7 @@ import com.tkppp.sportresult.kbo.dto.KboRankDto
 import com.tkppp.sportresult.kbo.dto.KboRankResponseDto
 import org.springframework.http.HttpMethod
 import org.springframework.stereotype.Service
+import org.springframework.web.client.ResourceAccessException
 import org.springframework.web.client.RestClientException
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.client.exchange
@@ -23,8 +24,10 @@ class KboRankService(
 
         return try {
             restTemplate.exchange<List<KboRankDto>>(url, HttpMethod.GET, null).body
-        } catch (restClientEx: RestClientException) {
-            throw CustomException(ErrorCode.CRAWLING_SERVER_REQUEST_ERROR, restClientEx)
+        } catch (resourceAccessEx: ResourceAccessException) {
+            throw CustomException(ErrorCode.CRAWLING_SERVER_CONNECTION_ERROR, resourceAccessEx)
+        } catch (connectionEx: ResourceAccessException) {
+            throw CustomException(ErrorCode.CRAWLING_SERVER_CONNECTION_ERROR, connectionEx)
         } catch (ex: Exception) {
             throw ex
         }

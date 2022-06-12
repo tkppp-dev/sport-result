@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node app",
+    "start": "pm2 start app.js",
     "dev": "nodemon app"
   },
   "dependencies": {

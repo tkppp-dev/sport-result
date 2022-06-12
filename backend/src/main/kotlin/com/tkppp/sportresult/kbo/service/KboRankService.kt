@@ -12,6 +12,7 @@ import org.springframework.web.client.RestClientException
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.client.exchange
 import java.lang.Exception
+import java.sql.Connection
 
 @Service
 class KboRankService(
@@ -26,8 +27,6 @@ class KboRankService(
             restTemplate.exchange<List<KboRankDto>>(url, HttpMethod.GET, null).body
         } catch (resourceAccessEx: ResourceAccessException) {
             throw CustomException(ErrorCode.CRAWLING_SERVER_CONNECTION_ERROR, resourceAccessEx)
-        } catch (connectionEx: ResourceAccessException) {
-            throw CustomException(ErrorCode.CRAWLING_SERVER_CONNECTION_ERROR, connectionEx)
         } catch (ex: Exception) {
             throw ex
         }

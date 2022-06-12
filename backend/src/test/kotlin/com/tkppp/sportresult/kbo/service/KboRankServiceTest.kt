@@ -19,6 +19,7 @@ import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.web.client.ResourceAccessException
 import org.springframework.web.client.RestClientException
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.client.exchange
@@ -131,7 +132,7 @@ class KboRankServiceTest {
                 any(),
                 null
             )
-        } throws RestClientException("요청 실패 스텁")
+        } throws ResourceAccessException("요청 실패 스텁")
 
         // when
         val ex = assertThrows<CustomException> {
@@ -140,6 +141,6 @@ class KboRankServiceTest {
 
         verify(exactly = 1) { restTemplate.exchange<List<KboRankDto>>(any<String>(), any(), null) }
         assertThat(ex).isInstanceOf(CustomException::class.java)
-        assertThat(ex.message).isEqualTo("org.springframework.web.client.RestClientException: 요청 실패 스텁")
+        assertThat(ex.message).isEqualTo("org.springframework.web.client.ResourceAccessException: 요청 실패 스텁")
     }
 }

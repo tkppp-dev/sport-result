@@ -9,16 +9,16 @@
       />
       <div class="today-match-item">
         <div class="today-match-state">{{ match.matchProgress  }}</div>
-        <router-link
+        <a
           class="today-match-record"
           v-if="
             match.matchProgress != '경기취소' &&
             match.matchProgress != '경기전'
           "
-          to="/"
+          :href="`https://m.sports.naver.com/game/${match.matchDate}${match.homeCode}${match.awayCode}0${match.matchDate.slice(0,4)}/record`"
         >
           기록
-        </router-link>
+        </a>
       </div>
       <right-team
         class="today-match-item"
@@ -53,7 +53,7 @@ export default {
         }
       }
     }
-  }
+  }, 
 };
 </script>
 

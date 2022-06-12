@@ -38,4 +38,4 @@ out/
 
 # 암호화 테스트 제외
 JasyptConfig.kt
-config/EncryptTest.kt
+EncryptTest.kt

@@ -42,6 +42,7 @@ class KboRankService(
             val updated = entities.map {
                 val rankDto = kboRankDtos[it.ranking - 1]
                 it.name = rankDto.name
+                it.played = rankDto.played
                 it.win = rankDto.win
                 it.draw = rankDto.draw
                 it.defeat = rankDto.defeat

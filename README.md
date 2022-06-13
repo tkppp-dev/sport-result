@@ -1,9 +1,10 @@
 # 스포츠 결과 확인하기 웹
 
-목적 내가 좋아하는 스포츠에 대해 경기 결과 및 기록을 빠르고 쉽게 확인하기 위해
+**목적**: 내가 좋아하는 스포츠에 대해 경기 결과 및 기록을 빠르고 쉽게 확인하기 위해
+**URL**: http://13.209.36.27:8080/kbo
 
 # 구현 범위
-1. 국내 프로야구
+1. KBO - 완료
 2. LCK
 3. NBA
 
@@ -16,12 +17,13 @@
 
 
 # 사용 기술
-back - kotlin, springboot, jpa, mysql, python or node crawler
-front - vue
-devops - aws ec2, aurora, travis
+Backend(Main Server) - Kotlin, SpringBoot, JPA, MySQL
+Backend(Crawling Server) - Node.js, Express, Cheerio
+Frontend - Vue.js
+DevOps - AWS EC2, RDS
 
 # 구현 방식
-구현을 위한 api가 따로 존재하진 않음 -> 크롤링 위주
+구현을 위한 api가 따로 존재하진 않기 때문에 크롤링에 의존
 
 ## 국내야구
 1. 최근 경기 결과
@@ -39,7 +41,8 @@ devops - aws ec2, aurora, travis
   - 연도별 일정 크롤링(crawling) : 완료
   - 관리자 페이지 : 미완료
 
-
-나머지는 프로야구 구현하고 해볼 것
-한번 배포 자동화 구현해볼 
+# 추후 목표
+- Travis CI를 활용한 배포 자동화를 구현해 다른 기능 구현시 배포 편의성 증대
+- 곧 시작하는 LCK Summer에 대해 경기 결과, 순위, 일정 구현
+- NBA는 시즌 마무리가 얼마 남지 않아 구현 필요성을 느끼기 어려워 잠정 중단
 

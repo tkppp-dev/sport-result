@@ -1,4 +1,4 @@
-#!bin/bash
+#!/bin/bash
 
 BASE_PATH = /home/ec2-user/sport-result
 CRAWLING_PATH = /home/ec2-user/sport-result/crawling-server

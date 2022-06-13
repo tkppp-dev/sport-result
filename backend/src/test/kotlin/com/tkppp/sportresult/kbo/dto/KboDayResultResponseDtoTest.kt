@@ -26,7 +26,8 @@ internal class KboDayResultResponseDtoTest {
 
         println(dto)
         assertThat(dto.matchDate.length).isEqualTo(8)
-        assertThat(dto.startTime).isEqualTo(entity.startTime)
+        assertThat(dto.matchDate).isEqualTo(dto.getDateString(entity.matchDate))
+        assertThat(dto.startTime).isEqualTo(dto.getStartTimeString(entity.startTime!!))
         assertThat(dto.matchStatus).isEqualTo(entity.matchStatus)
         assertThat(dto.matchProgress).isNull()
         assertThat(dto.home).isEqualTo(entity.home?.fullName)

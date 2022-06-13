@@ -20,7 +20,7 @@ data class KboDayResultResponseDto(
     val awayScore: Int
 ) {
 
-    private fun getDateString(date: LocalDate): String{
+    fun getDateString(date: LocalDate): String{
         val dateString = StringBuilder()
 
         dateString.append(date.year)
@@ -30,7 +30,7 @@ data class KboDayResultResponseDto(
         return dateString.toString()
     }
 
-    private fun getStartTimeString(time: LocalTime): String {
+    fun getStartTimeString(time: LocalTime): String {
         val timeString = StringBuilder()
         timeString.append("${time.hour}:")
         timeString.append(if(time.minute < 10) "0${time.minute}" else "${time.minute}")

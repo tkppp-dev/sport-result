@@ -32,11 +32,11 @@ cd $CRAWLING_PATH
 echo "크롤링 서버 의존성 확인"
 npm install
 
-echo "크롤링 서버 배포"
+echo "크롤링 서버 배포 시작"
 pm2 start $CRAWLING_PATH/app.js
 
-NEW_NODE_PID=$(pgrep -f app.js)
 sleep 1
+NEW_NODE_PID=$(pgrep -f app.js)
 if [ -z $NEW_NODE_PID ]; then
     echo "크롤링 서버 배포 실패"
 else
@@ -54,11 +54,11 @@ if [ -z $BUILD_FILE ]; then
     echo "메인 서버 빌드 실패"
 else
     echo "메인 서버 빌드 성공"
-    echo "메인 서버 배포"
+    echo "메인 서버 배포 시작"
     nohup java -jar $BUILD_FILE /dev/null &
 
-    NEW_BACKEND_PID=$(pgrep -f sportresult)
     sleep 1
+    NEW_BACKEND_PID=$(pgrep -f sportresult)
     if [ -z $NEW_BACKEND_PID ]; then
         echo "메인 서버 배포 실패"
     else

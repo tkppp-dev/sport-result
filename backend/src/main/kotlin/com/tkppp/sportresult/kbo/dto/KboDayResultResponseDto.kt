@@ -9,7 +9,7 @@ import java.time.LocalTime
 
 data class KboDayResultResponseDto(
     var matchDate: String = "",
-    val startTime: LocalTime?,
+    var startTime: String = "",
     val matchStatus: MatchStatus,
     val matchProgress: MatchProgress?,
     val home: String?,
@@ -30,8 +30,15 @@ data class KboDayResultResponseDto(
         return dateString.toString()
     }
 
+    private fun getStartTimeString(time: LocalTime): String {
+        val timeString = StringBuilder()
+        timeString.append("${time.hour}:")
+        timeString.append(if(time.minute < 10) "0${time.minute}" else "${time.minute}")
+
+        return timeString.toString()
+    }
+
     constructor(entity: KboMatch) : this(
-        startTime = entity.startTime,
         matchStatus = entity.matchStatus,
         matchProgress = entity.matchProgress,
         home = entity.home?.fullName,
@@ -42,5 +49,6 @@ data class KboDayResultResponseDto(
         awayScore = entity.awayScore
     ) {
         matchDate = getDateString(entity.matchDate)
+        startTime = entity.startTime?.let { getStartTimeString(it) } ?: ""
     }
 }

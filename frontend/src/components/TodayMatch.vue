@@ -9,6 +9,7 @@
       />
       <div class="today-match-item">
         <div class="today-match-state">{{ match.matchProgress  }}</div>
+        <div class="today-match-start" v-if="match.matchProgress == '경기전'">{{match.startTime}}</div>
         <a
           class="today-match-record"
           v-if="
@@ -86,6 +87,11 @@ export default {
 
 .today-match-item {
   flex: 1;
+}
+
+.today-match-start {
+  font-weight: bold;
+  font-size: 12px;
 }
 
 .today-match-state {

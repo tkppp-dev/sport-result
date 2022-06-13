@@ -11,20 +11,20 @@ echo "GIT PULL"
 git pull
 
 # 서버가 실행 중이면 종료
-NODE_PID=$(pgrep -f node)
+NODE_PID=$(pgrep -f app.js)
 if [ -z "$NODE_PID" ]; then
     echo "현재 크롤링 서버 동작 X"
 else
-    echo "크롤링 서버 중단"
     pm2 kill
+    echo "PID [$NODE_PID] - 크롤링 서버 중단"
 fi
 
-BACKEND_PID=$(pgrep -f java)
+BACKEND_PID=$(pgrep -f sportresult)
 if [ -z "$BACKEND_PID" ]; then
     echo "현재 메인 서버 동작 X"
 else
-    echo "메인 서버 중단"
     kill -9 $BACKEND_PID
+    echo "PID [$BACKEND_PID] - 메인 서버 중단"
 fi
 
 # 크롤링 서버 배포
@@ -36,7 +36,7 @@ echo "크롤링 서버 배포"
 pm2 start $CRAWLING_PATH/app.js
 
 NEW_NODE_PID=$(pgrep -f app.js)
-if [ -z "$NEW_NODE_PID" ]; then
+if [ -z $NEW_NODE_PID ]; then
     echo "크롤링 서버 배포 실패"
 else
     echo "크롤링 서버 배포 성공"

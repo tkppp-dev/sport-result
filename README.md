@@ -1,11 +1,11 @@
-
-
-
 # 스포츠 결과 확인하기 웹
 
 **목적**: 내가 좋아하는 스포츠에 대해 경기 결과 및 기록을 빠르고 쉽게 확인하기 위해
 
 **URL**: http://13.209.36.27:8080/kbo
+<p align="center" style="margin: 30px 0px;">
+    <img src="https://user-images.githubusercontent.com/71641938/173333697-d34a4669-f840-4ef3-b7e9-afab2d35f38a.jpg" width="450"/>
+</p>
 
 # 구현 범위
 1. KBO - 완료

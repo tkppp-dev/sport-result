@@ -35,7 +35,7 @@ npm install
 echo "크롤링 서버 배포"
 pm2 start $CRAWLING_PATH/app.js
 
-NEW_NODE_PID=$(pgrep -f node)
+NEW_NODE_PID=$(pgrep -f app.js)
 if [ -z "$NEW_NODE_PID" ]; then
     echo "크롤링 서버 배포 실패"
 else
@@ -48,7 +48,7 @@ echo "메인 서버 빌드"
 rm -rf BUILD_PATH
 ./gradlew build
 
-BUILD_FILE=$(find $BUILD_PATH -type f -name '*SNAPSHOT.jar' | grep *.jar)
+BUILD_FILE=$(find $BUILD_PATH -type f -name '*SNAPSHOT.jar' | grep .*.jar)
 if [ -z $BUILD_FILE ]; then
     echo "메인 서버 빌드 실패"
 else
@@ -56,7 +56,7 @@ else
     echo "메인 서버 배포"
     nohup java -jar $BUILD_FILE /dev/null &
 
-    NEW_BACKEND_PID=$(pgrep -f java)
+    NEW_BACKEND_PID=$(pgrep -f sportresult)
     if [ -z $NEW_BACKEND_PID ]; then
         echo "메인 서버 배포 실패"
     else

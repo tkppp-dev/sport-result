@@ -19,7 +19,7 @@ else
     pm2 kill
 fi
 
-BACKEND_PID=$(pgep -f java)
+BACKEND_PID=$(pgrep -f java)
 if [ -z "$BACKEND_PID" ]; then
     echo "현재 메인 서버 동작 X"
 else

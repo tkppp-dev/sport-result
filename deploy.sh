@@ -36,15 +36,16 @@ echo "크롤링 서버 배포"
 pm2 start $CRAWLING_PATH/app.js
 
 NEW_NODE_PID=$(pgrep -f app.js)
+sleep 1
 if [ -z $NEW_NODE_PID ]; then
     echo "크롤링 서버 배포 실패"
 else
-    echo "크롤링 서버 배포 성공"
+    echo "PID [$NEW_NODE_PID] - 크롤링 서버 배포 성공"
 fi
 
 # 메인 서버 배포
 cd $BACKEND_PATH
-echo "메인 서버 빌드"
+echo "메인 서버 빌드 시작"
 rm -rf BUILD_PATH
 ./gradlew build
 
@@ -57,10 +58,11 @@ else
     nohup java -jar $BUILD_FILE /dev/null &
 
     NEW_BACKEND_PID=$(pgrep -f sportresult)
+    sleep 1
     if [ -z $NEW_BACKEND_PID ]; then
         echo "메인 서버 배포 실패"
     else
-        echo "메인 서버 배포 성공"
+        echo "PID [$NEW_BACKEND_PID] - 메인 서버 배포 성공"
     fi
 fi
 

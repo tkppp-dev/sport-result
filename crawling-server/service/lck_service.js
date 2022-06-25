@@ -1,5 +1,6 @@
 import puppeteer from 'puppeteer';
 import cheerio from 'cheerio';
+import axios from 'axios';
 
 const season = '2022 LCK 서머';
 const broser = await puppeteer.launch();
@@ -19,9 +20,8 @@ export async function getLckMatchResult(next) {
           const team = $(node).find("[class*='broadcast_name__']");
           const state = $(node).find("[class*='broadcast_status__']")
           const score = $(node).find("[class*='broadcast_num__']");
-          const startTime = $(node).find("[class*='broadcast_time__']");
+
           return {
-            startTime: startTime.get(0) != undefined ? startTime.text().split(':') : null,
             state: state.get(0).firstChild.data,
             home: team.get(0).firstChild.data,
             away: team.get(1).firstChild.data,

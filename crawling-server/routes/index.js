@@ -1,5 +1,6 @@
 import express from 'express'
-import { getDayMatchResult, getKboTeamRanking, getYearlyKboSchedule } from '../service/kbo_crawling_service.js'
+import { getDayMatchResult, getKboTeamRanking, getYearlyKboSchedule } from '../service/kbo_service.js'
+import { getLckMatchResult, getLckMonthSchedule } from '../service/lck_service.js';
 import localDate from '../util/localeDate.js';
 
 const router = express.Router();
@@ -46,5 +47,17 @@ router.get('/api/kbo/:year', async function(req, res, next) {
   res.send(result)
 });
 
+router.get('/api/lck/day', async (req, res, next) => {
+  const result = await getLckMatchResult(next)
+  res.send(result)
+})
+
+router.get('/api/lck/schedule', async (req, res, next) => {
+  const year = req.query.year
+  const month = req.query.month < 10 ? `0${req.query.month}` : req.query.month
+  console.log(year, month)
+  const result = await getLckMonthSchedule(year, month, next)
+  res.send(result)
+})
 
 export default router

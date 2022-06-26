@@ -78,7 +78,7 @@ export default {
 }
 
 .today-match-wrapper:not(:last-of-type) {
-  border-bottom: 1px solid rgba(128, 128, 128, 0.3);
+  border-bottom: 1px solid #8080804d;
 }
 
 .today-match-wrapper:last-of-type {
@@ -108,7 +108,7 @@ export default {
   margin-top: 3px;
   padding: 1px 8px;
   font-size: 11px;
-  border: 1px solid rgba(128, 128, 128, 0.6);
+  border: 1px solid #80808099;
   text-decoration: none;
   color: black;
 }

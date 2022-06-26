@@ -55,7 +55,7 @@ router.get('/api/lck/day', async (req, res, next) => {
 router.get('/api/lck/schedule', async (req, res, next) => {
   const year = req.query.year
   const month = req.query.month < 10 ? `0${req.query.month}` : req.query.month
-  console.log(year, month)
+
   const result = await getLckMonthSchedule(year, month, next)
   res.send(result)
 })

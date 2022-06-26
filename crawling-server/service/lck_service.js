@@ -31,8 +31,7 @@ export async function getLckMatchResult(next) {
         } else {
           return;
         }
-      })
-      .toArray();
+      }).toArray();
   } catch (err) {
     console.error('Error occured at getLckMatchResult()');
     next(err);
@@ -41,7 +40,6 @@ export async function getLckMatchResult(next) {
 
 export async function getLckMonthSchedule(year, month, next) {
   try {
-    
     const url = `https://game.naver.com/esports/schedule/lck?date=${year}-${month}`;
     const page = await broser.newPage();
     await page.goto(url);
@@ -49,7 +47,8 @@ export async function getLckMonthSchedule(year, month, next) {
     const $ = cheerio.load(await page.content());
     return $("[class*='list_wrap__']").children()
       .map((idx, node) => {
-        if (node.attribs.class.startsWith('card_item__') && node.attribs['data-today-status'] == 'false') {
+        if (node.attribs.class.startsWith('card_item__') && node.attribs['data-time-stamp'] != '') {
+          console.log(node.attribs['data-time-stamp'])
           const date = $(node).find("[class*='card_date__']").text().split(' ')
           const matches = $(node).find('ul').children().map((idx, matchNode) => {
             const startTime = $(matchNode).find("[class*='row_time__']").text().split(':')

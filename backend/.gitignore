@@ -41,4 +41,4 @@ JasyptConfig.kt
 EncryptTest.kt
 
 # 통합테스트 제외
-Integration/
+/src/test/kotlin/com/tkppp/sportresult/Integration/

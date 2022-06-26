@@ -91,7 +91,7 @@ class KboSchedulingService(
 
     @Scheduled(cron = "0 30 18 * * ?")
     fun sendMatchResultEventToCrawlingServerWhen1830() {
-        val baseTime = LocalTime.of(17, 0, 0)
+        val baseTime = LocalTime.of(18, 30, 0)
         sendMatchResultEvent(baseTime)
     }
 

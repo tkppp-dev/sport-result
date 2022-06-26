@@ -39,3 +39,6 @@ out/
 # 암호화 및 테스트 제외
 JasyptConfig.kt
 EncryptTest.kt
+
+# 통합테스트 제외
+/Integration

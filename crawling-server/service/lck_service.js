@@ -12,14 +12,16 @@ export async function getLckMatchResult(next) {
     await page.goto(url);
 
     const $ = cheerio.load(await page.content());
-    return $("[class*='broadcast_content__']")
+    const states = []
+    const matchInfos = $("[class*='broadcast_content__']")
       .children()
       .map((idx, node) => {
         const type = $(node).find("[class*='broadcast_match_name__']").text();
         if (type.startsWith(season)) {
           const team = $(node).find("[class*='broadcast_name__']");
-          const state = $(node).find("[class*='broadcast_status__']")
           const score = $(node).find("[class*='broadcast_num__']");
+          const state = $(node).find("[class*='broadcast_status__']")
+          states.push(state)
 
           return {
             state: state.get(0).firstChild.data,
@@ -32,6 +34,9 @@ export async function getLckMatchResult(next) {
           return;
         }
       }).toArray();
+    
+      await axios.patch('http://localhost:8080/api/lck/day', matchInfos)
+      return states
   } catch (err) {
     console.error('Error occured at getLckMatchResult()');
     next(err);
@@ -48,7 +53,6 @@ export async function getLckMonthSchedule(year, month, next) {
     return $("[class*='list_wrap__']").children()
       .map((idx, node) => {
         if (node.attribs.class.startsWith('card_item__') && node.attribs['data-time-stamp'] != '') {
-          console.log(node.attribs['data-time-stamp'])
           const date = $(node).find("[class*='card_date__']").text().split(' ')
           const matches = $(node).find('ul').children().map((idx, matchNode) => {
             const startTime = $(matchNode).find("[class*='row_time__']").text().split(':')

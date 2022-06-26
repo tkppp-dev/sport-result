@@ -1,7 +1,8 @@
-package com.tkppp.sportresult.kbo.service
+package com.tkppp.sportresult.lck.service
 
-import com.tkppp.sportresult.kbo.domain.KboMatchRepository
+import com.tkppp.sportresult.kbo.service.KboSchedulingService
 import com.tkppp.sportresult.kbo.util.MatchStatus
+import com.tkppp.sportresult.lck.domain.LckMatchRepository
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpMethod
 import org.springframework.scheduling.TaskScheduler
@@ -16,14 +17,14 @@ import java.util.concurrent.ScheduledFuture
 import javax.annotation.PostConstruct
 
 @Service
-class KboSchedulingService(
+class LckSchedulingService(
     private val scheduler: TaskScheduler,
-    private val kboMatchRepository: KboMatchRepository,
+    private val lckMatchRepository: LckMatchRepository,
     private val restTemplate: RestTemplate,
 ) {
     private val logger = LoggerFactory.getLogger(KboSchedulingService::class.java)
-    private val dayResultUrl = "http://localhost:3000/api/kbo/day"
-    private val rankUrl = "http://localhost:3000/api/kbo/rank"
+    private val dayResultUrl = "http://localhost:3000/api/lck/day"
+
     var initialScheduler: ScheduledFuture<*>? = null
     var dayMatchStart: LocalTime? = null
 
@@ -60,9 +61,9 @@ class KboSchedulingService(
 
     @Scheduled(cron = "0 0 2 * * ?")
     fun setDayMatchStartTime() {
-        val matches = kboMatchRepository.findKboDayMatch()
-        if (matches.isNotEmpty() && matches[0].matchStatus != MatchStatus.NO_MATCH) {
-            dayMatchStart = matches.minOf { it.startTime!! }
+        val matches = lckMatchRepository.findTodayMatches()
+        if (matches.isNotEmpty()) {
+            dayMatchStart = matches.minOf { it.startTime }
         }
     }
 
@@ -76,9 +77,9 @@ class KboSchedulingService(
         }
     }
 
-    @Scheduled(cron = "0 0 14 * * ?")
-    fun sendMatchResultEventToCrawlingServerWhen1400() {
-        val baseTime = LocalTime.of(14, 0, 0)
+    @Scheduled(cron = "0 0 15 * * ?")
+    fun sendMatchResultEventToCrawlingServerWhen1500() {
+        val baseTime = LocalTime.of(15, 0, 0)
         sendMatchResultEvent(baseTime)
     }
 
@@ -86,24 +87,5 @@ class KboSchedulingService(
     fun sendMatchResultEventToCrawlingServerWhen1700() {
         val baseTime = LocalTime.of(17, 0, 0)
         sendMatchResultEvent(baseTime)
-
     }
-
-    @Scheduled(cron = "0 30 18 * * ?")
-    fun sendMatchResultEventToCrawlingServerWhen1830() {
-        val baseTime = LocalTime.of(18, 30, 0)
-        sendMatchResultEvent(baseTime)
-    }
-
-    @Scheduled(cron = "0 0,30 21-23 * * ?")
-    fun sendRankEventToCrawlingServer() {
-        if (dayMatchStart != null) {
-            try {
-                restTemplate.exchange<Any>(rankUrl, HttpMethod.GET, null)
-            } catch (ex: Exception) {
-                logger.error(ex.message)
-            }
-        }
-    }
-
 }

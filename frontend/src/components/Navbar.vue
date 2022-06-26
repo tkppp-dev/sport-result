@@ -1,13 +1,13 @@
 <template>
   <nav id="nav-wrapper">
     <div class="nav-item-wrapper" :class="{ selected: isKboSelected}">
-      <router-link class="nav-item" to="/kbo">KBO</router-link>
-    </div>
-    <div class="nav-item-wrapper" :class="{ selected: isNbaSelected}">
-      <router-link class="nav-item" to="/nba">NBA</router-link>
+      <router-link class="nav-item" to="/">KBO</router-link>
     </div>
     <div class="nav-item-wrapper" :class="{ selected: isLckSelected}">
       <router-link class="nav-item" to="/lck">LCK</router-link>
+    </div>
+    <div class="nav-item-wrapper" :class="{ selected: isNbaSelected}">
+      <router-link class="nav-item" to="/nba">NBA</router-link>
     </div>
   </nav>
 </template>
@@ -25,7 +25,7 @@ export default {
     const type = this.$route.path.split('/')[1]
 
     switch(type){
-      case 'kbo':
+      case '':
         this.isKboSelected = true
         break
       case 'nba':

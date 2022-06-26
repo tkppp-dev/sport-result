@@ -12,16 +12,8 @@ const routes = [
     name: "Kbo",
     component: Kbo,
     meta: {
-      title: baseName
-    }
-  },
-  {
-    path: "/kbo",
-    name: "Kbo",
-    component: Kbo,
-    meta: {
       title: baseName + ' - KBO'
-    }
+    },
   },
   {
     path: "/nba",

@@ -2,7 +2,7 @@ package com.tkppp.sportresult.lck.service
 
 import com.tkppp.sportresult.exception.CustomException
 import com.tkppp.sportresult.exception.ErrorCode
-import com.tkppp.sportresult.lck.domain.LckMathRepository
+import com.tkppp.sportresult.lck.domain.LckMatchRepository
 import com.tkppp.sportresult.lck.dto.*
 import com.tkppp.sportresult.lck.util.LckMatchState
 import org.springframework.http.HttpMethod
@@ -15,7 +15,7 @@ import java.time.LocalDate
 
 @Service
 class LckService(
-    private val lckMatchRepository: LckMathRepository,
+    private val lckMatchRepository: LckMatchRepository,
     private val restTemplate: RestTemplate
 ) {
 
@@ -78,9 +78,8 @@ class LckService(
                 if (tempDate == today) {
                     responseDto.todayMatches = dayDto
                 }
-            } else {
-                tempDate = tempDate.plusDays(1)
             }
+            tempDate = tempDate.plusDays(1)
         }
 
         return responseDto

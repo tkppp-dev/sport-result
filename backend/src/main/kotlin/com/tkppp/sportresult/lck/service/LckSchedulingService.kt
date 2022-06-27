@@ -1,7 +1,6 @@
 package com.tkppp.sportresult.lck.service
 
 import com.tkppp.sportresult.kbo.service.KboSchedulingService
-import com.tkppp.sportresult.kbo.util.MatchStatus
 import com.tkppp.sportresult.lck.domain.LckMatchRepository
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpMethod

@@ -2,14 +2,13 @@
 
 **목적**: 내가 좋아하는 스포츠에 대해 경기 결과 및 기록을 빠르고 쉽게 확인하기 위해
 
-**URL**: http://13.209.36.27:8080/kbo
-<p align="center" style="margin: 30px 0px;">
-    <img src="https://user-images.githubusercontent.com/71641938/173333697-d34a4669-f840-4ef3-b7e9-afab2d35f38a.jpg" width="450"/>
-</p>
+**URL**
+KBO Page: http://13.209.36.27:8080/
+LCK Page: http://13.209.36.27:8080/lck
 
 # 구현 범위
 1. KBO - 완료
-2. LCK
+2. LCK - 당일 경기 및 주간 경기 일정 완료
 3. NBA
 
 현재 관심있는 스포츠 3가지에 대해 구현 예정
@@ -22,7 +21,7 @@
 
 # 사용 기술
 **Backend(Main Server)** - Kotlin, SpringBoot, JPA, MySQL   
-**Backend(Crawling Server)** - Node.js, Express, Cheerio   
+**Backend(Crawling Server)** - Node.js, Express, Cheerio, puppeteer   
 **Frontend** - Vue.js   
 **DevOps** - AWS EC2, RDS   
 
@@ -46,8 +45,20 @@ db에 저장한 결과를 받아오지만 스케줄링을 통해 일정 시간 �
   - 연도별 일정 크롤링(crawling) : 완료
   - 관리자 페이지 : 미완료
 
+## LCK
+구현 완료  
+- 당일 경기 결과
+- 주간 경기 일정
+- 월별 일정 가져오기
+
+미구현
+- 팀 순위
+
+버그
+- 주간 경기 일정을 가져올때 달의 끝이 포함된 주일 경우 해당 달의 끝날까지만 조회됨
+
 # 추후 목표
 - Travis CI를 활용한 배포 자동화를 구현해 다른 기능 구현시 배포 편의성 증대
-- 곧 시작하는 LCK Summer에 대해 경기 결과, 순위, 일정 구현
+- 곧 시작하는 LCK Summer 순위, 일정 구현
 - NBA는 시즌 마무리가 얼마 남지 않아 구현 필요성을 느끼기 어려워 잠정 중단
 

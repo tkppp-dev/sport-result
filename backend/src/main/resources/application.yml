@@ -35,6 +35,8 @@ spring:
     url: jdbc:mysql://mysql-rds.cuwguiwtvuh1.ap-northeast-2.rds.amazonaws.com:3306/sport_result
     username: tkppp
     password: tiffndla0423
+    hikari:
+      maximum-pool-size: 20
   jpa:
     hibernate:
       ddl-auto: update

@@ -9,7 +9,7 @@ async function sendDayResultData(name, callback, next) {
   const progresses = await callback(next)
   console.log(`[${localDate().toISOString()}] ${name} day match result data send`)
   try {
-    temp = progresses.filter(progress => progress == '종료' || progress == '경기취소' || progress == '취소')
+    let temp = progresses.filter(progress => progress == '종료' || progress == '경기취소' || progress == '취소')
     if(temp.length == progresses.length) {
       return false
     }
@@ -21,7 +21,8 @@ async function sendDayResultData(name, callback, next) {
 
     return true
   } catch (err) {
-    console.log(`Error occured at sendDayResultData("${name}") end checking`)
+    console.error(`Error occured at sendDayResultData("${name}") end checking`)
+    console.error(err)
   }
 }
 

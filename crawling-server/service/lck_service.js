@@ -9,8 +9,8 @@ export async function getLckMatchResult(next) {
   try {
     const url = 'https://game.naver.com/esports';
     const page = await broser.newPage();
+    page.setDefaultNavigationTimeout(0)
     await page.goto(url);
-
     const $ = cheerio.load(await page.content());
     const states = []
     const matchInfos = $("[class*='broadcast_content__']")
@@ -34,8 +34,7 @@ export async function getLckMatchResult(next) {
           return;
         }
       }).toArray();
-    
-      await axios.patch('http://localhost:8080/api/lck/day', matchInfos)
+      if(matchInfos.length > 0) await axios.patch('http://localhost:8080/api/lck/day', matchInfos)
       return states
   } catch (err) {
     console.error('Error occured at getLckMatchResult()');
@@ -47,6 +46,7 @@ export async function getLckMonthSchedule(year, month, next) {
   try {
     const url = `https://game.naver.com/esports/schedule/lck?date=${year}-${month}`;
     const page = await broser.newPage();
+    page.setDefaultNavigationTimeout(0)
     await page.goto(url);
 
     const $ = cheerio.load(await page.content());

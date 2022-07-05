@@ -8,16 +8,25 @@ const router = express.Router();
 async function sendDayResultData(name, callback, next) {
   const progresses = await callback(next)
   console.log(`[${localDate().toISOString()}] ${name} day match result data send`)
-  for(let progress of progresses) {
-    if(progress != '종료' && progress != '경기취소' && progress != '취소'){
-      return true
+  try {
+    temp = progresses.filter(progress => progress == '종료' || progress == '경기취소' || progress == '취소')
+    if(temp.length == progresses.length) {
+      return false
     }
+    
+    temp = progresses.filter(progress => progress == '경기전' || progress == '예정')
+    if (temp.length == progresses.length) {
+      return false
+    }
+
+    return true
+  } catch (err) {
+    console.log(`Error occured at sendDayResultData("${name}") end checking`)
   }
-  return false
 }
 
-async function stopInterval(isEnd, name, callback, next) {
-  if(isEnd) {
+async function stopInterval(isContinue, name, callback, next) {
+  if(isContinue) {
     const interval = setInterval(async () => {
       const repeat = await sendDayResultData(name, callback, next)
       if(!repeat) {
@@ -32,8 +41,8 @@ async function stopInterval(isEnd, name, callback, next) {
 
 router.get('/api/kbo/day', async function(req, res, next) {
   const serviceName = 'KBO'
-  const isEnd = await sendDayResultData(serviceName, getDayMatchResult, next)
-  stopInterval(isEnd, serviceName, getDayMatchResult, next)
+  const isContinue = await sendDayResultData(serviceName, getDayMatchResult, next)
+  stopInterval(isContinue, serviceName, getDayMatchResult, next)
 
   res.status(200)
   res.send()
@@ -53,8 +62,8 @@ router.get('/api/kbo/:year', async function(req, res, next) {
 
 router.get('/api/lck/day', async (req, res, next) => {
   const serviceName = 'LCK'
-  const isEnd = await sendDayResultData(serviceName, getLckMatchResult, next)
-  stopInterval(isEnd, serviceName, getLckMatchResult, next)
+  const isContinue = await sendDayResultData(serviceName, getLckMatchResult, next)
+  stopInterval(isContinue, serviceName, getLckMatchResult, next)
   res.status(200)
   res.send()
 })

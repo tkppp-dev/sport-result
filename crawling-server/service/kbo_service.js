@@ -24,7 +24,7 @@ export async function getDayMatchResult(next) {
         }
       }).toArray()
     
-    await axios.put("http://localhost:8080/api/kbo/day", matchSummarys)
+    if(matchSummarys.length > 0) await axios.put("http://localhost:8080/api/kbo/day", matchSummarys)
     return matchSummarys.map ((match) => match.matchProgress)
   } catch(err){
     console.error(err)

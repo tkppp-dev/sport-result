@@ -1,56 +1,55 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { MatchStatus, MatchProgress, Team } from './kbo.utils';
+import { localDate, localDatetime } from '@/utils/date'
+import moment from 'moment'
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { MatchProgress, Team, matchProgressEnum, teamEnum } from './kbo.utils'
 
 @Entity()
-export class KboMatch {
+export class KboMatch extends BaseEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: number
 
   @Column({ type: 'date', nullable: false })
-  matchDate: Date;
+  matchDate: Date
 
   @Column({ type: 'time', nullable: false })
-  startTime: Date;
+  startTime: Date
 
   @Column({
     type: 'enum',
-    enum: MatchStatus,
-    default: MatchStatus.BEFORE_MATCH,
+    enum: matchProgressEnum,
     nullable: false,
   })
-  matchStatus: MatchStatus;
+  matchProgress: MatchProgress
 
   @Column({
     type: 'enum',
-    enum: MatchProgress,
-    default: null,
-    nullable: true,
-  })
-  matchProgress: MatchProgress;
-
-  @Column({
-    type: 'enum',
-    enum: Team,
+    enum: teamEnum,
     nullable: false,
   })
-  home: Team;
+  home: Team
 
   @Column({
     type: 'enum',
-    enum: Team,
+    enum: teamEnum,
     nullable: false,
   })
-  away: Team;
+  away: Team
 
   @Column({
     default: 0,
     nullable: false,
   })
-  homeScore: number;
+  homeScore: number
 
   @Column({
     default: 0,
     nullable: false,
   })
-  awayScore: number;
+  awayScore: number
+
+  static findTodayMatches() {
+    return this.createQueryBuilder()
+      .where('matchDate = :today', {today: moment(localDate()).format('YYYY-MM-DD')})
+      .getMany()
+  }
 }

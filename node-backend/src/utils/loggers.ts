@@ -1,10 +1,11 @@
 import path from 'path';
 import log4js from 'log4js';
 import { configure } from 'log4js';
+import { localDate } from './date';
 export { getLogger } from 'log4js';
 
 export function bootstrapLogger() {
-  const date = new Date();
+  const date = localDate();
   const strDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 
   configure({

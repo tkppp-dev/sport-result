@@ -3,18 +3,25 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "export NODE_OPTIONS='--trace-deprecation --abort-on-uncaught-exception' && export NODE_ENV=development && nodemon --exec ts-node ./bin/www.ts",
+    "start": "export NODE_ENV=production && nodemon --exec ts-node ./bin/www.ts",
+    "dev": "export NODE_OPTIONS='--trace-deprecation --abort-on-uncaught-exception' && export NODE_ENV=development && nodemon --exec ts-node ./bin/www.ts",
     "build": "sh etc/build.sh"
   },
   "dependencies": {
+    "axios": "^0.27.2",
+    "cheerio": "^1.0.0-rc.12",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "dotenv": "^16.0.0",
     "express": "~4.16.1",
+    "express-async-errors": "^3.1.1",
     "log4js": "latest",
     "module-alias": "^2.2.2",
+    "moment": "^2.29.3",
+    "moment-timezone": "^0.5.34",
     "morgan": "~1.9.1",
-    "mysql": "^2.18.1",
+    "mysql2": "^2.3.3",
+    "node-schedule": "^2.1.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "typeorm": "^0.3.7"
@@ -27,6 +34,7 @@
     "@types/http-errors": "^1.8.1",
     "@types/morgan": "^1.9.3",
     "@types/node": "^16.10.2",
+    "@types/node-schedule": "^2.1.0",
     "nodemon": "^2.0.15",
     "ts-node": "^10.2.1",
     "typescript": "^4.4.3"

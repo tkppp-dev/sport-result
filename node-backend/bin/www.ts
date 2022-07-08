@@ -1,7 +1,3 @@
-/**
- * Module dependencies.
- */
-
 import 'module-alias/register';
 import { config } from 'dotenv';
 config();
@@ -14,16 +10,23 @@ const debug = Debug('node-backend:server');
 import { bootstrapLogger } from '@/utils/loggers';
 bootstrapLogger();
 
-/**
- * Get port from environment and store in Express.
- */
+import { MysqlDateSource } from '@/datasource'
+import { setDefaultScheduler, setupSchedulers } from '@/scheduler';
 
-const port = normalizePort(process.env.PORT || '3000');
+MysqlDateSource.initialize()
+  .then(async () => {
+    console.log('Data Source has been initialized!')
+    
+    // set scheduler
+    await setupSchedulers()
+    await setDefaultScheduler()
+  })
+  .catch((err) => {
+    console.error('Error during Data Source initialization', err)
+  })
+
+const port = normalizePort(process.env.PORT || '8080');
 app.set('port', port);
-
-/**
- * Create HTTP server.
- */
 
 const server = http.createServer(app);
 

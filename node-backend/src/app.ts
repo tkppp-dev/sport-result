@@ -1,4 +1,4 @@
-import express, { ErrorRequestHandler, RequestHandler } from 'express'
+import express, { ErrorRequestHandler } from 'express'
 import path from 'path'
 import cookieParser from 'cookie-parser'
 import logger from 'morgan'
@@ -6,7 +6,7 @@ import 'reflect-metadata'
 import 'express-async-errors'
 
 import KboRouter from './domain/kbo/kbo.controller'
-import createHttpError from 'http-errors'
+import LckRouter from '@/domain/lck/lck.controller'
 import { getLogger } from './utils/loggers'
 
 class App {
@@ -29,12 +29,13 @@ class App {
 
   private routerSetup() {
     this.app.use('/api/kbo', KboRouter)
+    this.app.use('/api/lck', LckRouter)
   }
 
   private errorConfig() {
     // 404 Not Found
     this.app.use((req, res, next) => {
-      next(createHttpError(404))
+      res.sendFile(path.join(__dirname, 'public/index.html'))
     })
 
     const errorHandler: ErrorRequestHandler = function (err, req, res, next) {

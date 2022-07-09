@@ -9,13 +9,9 @@ echo "GIT PULL"
 git pull
 
 # 서버가 실행 중이면 종료
-NODE_PID=$(pgrep -f ts-node)
-if [ -z "$NODE_PID" ]; then
-    echo "메인 서버 동작 X"
-else
-    pm2 kill
-    echo "PID [$NODE_PID] - 메인 서버 중단"
-fi
+echo "[PM2] 프로세스 매니저 종료"
+pm2 kill
+
 
 # 메인 서버 배포
 cd $BACKEND_PATH

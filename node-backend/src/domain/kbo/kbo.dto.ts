@@ -45,7 +45,7 @@ export class KboDayMatchGetResDto {
 }
 
 export class KboRankGetResDto {
-  readonly ranking: number
+  readonly rank: number
   readonly name: Team
   readonly played: number
   readonly win: number
@@ -55,7 +55,7 @@ export class KboRankGetResDto {
   readonly gameDiff: number
 
   constructor(rank: KboRank) {
-    this.ranking = rank.ranking
+    this.rank = rank.ranking
     this.name = rank.name
     this.played = rank.played
     this.win = rank.win

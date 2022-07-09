@@ -1,5 +1,5 @@
 import express from 'express';
-import { getKboDayMatches, getKboTeamRank, patchKboMatches, putKboMonthSchedule, putKboTeamRank } from './kbo.service';
+import { getKboDayMatches, getKboTeamRank, putKboMonthSchedule } from './kbo.service';
 import { MessageDto } from '@/utils/default.dto';
 
 const router = express.Router();

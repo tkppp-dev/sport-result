@@ -1,9 +1,7 @@
 #!/bin/bash
 
 BASE_PATH=/home/ec2-user/sport-result
-CRAWLING_PATH=/home/ec2-user/sport-result/crawling-server
-BACKEND_PATH=/home/ec2-user/sport-result/backend
-BUILD_PATH=$BACKEND_PATH/build/libs
+BACKEND_PATH=$BASE_PATH/node-backend
 
 # 변경 사항 받아오기
 cd $BASE_PATH
@@ -11,58 +9,26 @@ echo "GIT PULL"
 git pull
 
 # 서버가 실행 중이면 종료
-NODE_PID=$(pgrep -f app.js)
+NODE_PID=$(pgrep -f ts-node)
 if [ -z "$NODE_PID" ]; then
-    echo "현재 크롤링 서버 동작 X"
+    echo "메인 서버 동작 X"
 else
     pm2 kill
-    echo "PID [$NODE_PID] - 크롤링 서버 중단"
-fi
-
-BACKEND_PID=$(pgrep -f sportresult)
-if [ -z "$BACKEND_PID" ]; then
-    echo "현재 메인 서버 동작 X"
-else
-    kill -9 $BACKEND_PID
-    echo "PID [$BACKEND_PID] - 메인 서버 중단"
-fi
-
-# 크롤링 서버 배포
-cd $CRAWLING_PATH
-echo "크롤링 서버 의존성 확인"
-npm install
-
-echo "크롤링 서버 배포 시작"
-pm2 start $CRAWLING_PATH/app.js
-
-sleep 1
-NEW_NODE_PID=$(pgrep -f app.js)
-if [ -z $NEW_NODE_PID ]; then
-    echo "크롤링 서버 배포 실패"
-else
-    echo "PID [$NEW_NODE_PID] - 크롤링 서버 배포 성공"
+    echo "PID [$NODE_PID] - 메인 서버 중단"
 fi
 
 # 메인 서버 배포
 cd $BACKEND_PATH
-echo "메인 서버 빌드 시작"
-rm -rf BUILD_PATH
-./gradlew build
+echo "메인 서버 의존성 확인"
+npm install
 
-BUILD_FILE=$(find $BUILD_PATH -type f -name '*SNAPSHOT.jar' | grep .*.jar)
-if [ -z $BUILD_FILE ]; then
-    echo "메인 서버 빌드 실패"
+echo "메인 서버 배포 시작"
+npm start
+
+sleep 1
+NEW_NODE_PID=$(pgrep -f ts-node)
+if [ -z $NEW_NODE_PID ]; then
+    echo "메인 서버 배포 실패"
 else
-    echo "메인 서버 빌드 성공"
-    echo "메인 서버 배포 시작"
-    nohup java -jar $BUILD_FILE /dev/null &
-
-    sleep 1
-    NEW_BACKEND_PID=$(pgrep -f sportresult)
-    if [ -z $NEW_BACKEND_PID ]; then
-        echo "메인 서버 배포 실패"
-    else
-        echo "PID [$NEW_BACKEND_PID] - 메인 서버 배포 성공"
-    fi
+    echo "PID [$NEW_NODE_PID] - 메인 서버 배포 성공"
 fi
-

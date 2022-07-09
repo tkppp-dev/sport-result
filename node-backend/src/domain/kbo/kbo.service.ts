@@ -2,15 +2,15 @@ import { MysqlDateSource } from '@/datasource'
 import { localDate, localTime } from '@/utils/date'
 import moment from 'moment'
 import { crawlingKboMatchDetail, crawlingKboSchedule, crawlingKboTeamRanking } from './kbo.crawling'
-import { KboDayMatchGetResDto, KboDayMatchPatchReqDto, KboRankGetResDto } from './kbo.dto'
+import { KboDayMatchGetResDto, KboRankGetResDto } from './kbo.dto'
 import { Team, MatchProgress } from './kbo.utils'
 import { KboMatch } from './kboMatch'
 import { KboRank } from './kboRank'
-import app from '@/app'
+import app from '@/app' 
 import { JobType } from '@/scheduler'
 import { getLogger } from '@/utils/loggers'
 
-const logger = getLogger('KBO-SERVICE')
+const logger = getLogger('KBO SERVICE')
 
 export async function putKboMonthSchedule(year: number, month: number) {
   const schedules = await crawlingKboSchedule(year, month)
@@ -72,7 +72,7 @@ export async function getKboDayMatches() {
 
 export async function patchKboMatches() {
   const currentMatchDetails = await crawlingKboMatchDetail()
-  const matches: KboMatch[] = await KboMatch.findBy({ matchDate: localDate() })
+  const matches: KboMatch[] = await KboMatch.findTodayMatches()
   let flag = 0
 
   for (let match of matches) {
@@ -81,11 +81,12 @@ export async function patchKboMatches() {
     } else {
       flag = 1
       for (let matchDetail of currentMatchDetails) {
+        if (matchDetail.matchProgress === '경기전') continue
+        
         if (matchDetail.home === match.home && matchDetail.away === match.away) {
           match.homeScore = matchDetail.homeScore
           match.awayScore = matchDetail.awayScore
           match.matchProgress = matchDetail.matchProgress as MatchProgress
-
           await KboMatch.save(match)
           break
         }
@@ -96,9 +97,9 @@ export async function patchKboMatches() {
   if (flag === 0) {
     try {
       app.locals[JobType.KboMatch].cancel()
-      logger.info('KBO 매치 업데이트 스케줄러 취소 완료')
+      logger.info('KBO 매치 업데이트 스케줄러 중단')
     } catch (err) {
-      logger.error('KBO 매치 업데이트 스케줄러 취소 실패', err)
+      logger.error('KBO 매치 업데이트 스케줄러 증단 실패', err)
     }
   }
 }

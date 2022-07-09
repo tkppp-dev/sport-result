@@ -7,19 +7,22 @@ import Debug from 'debug';
 import http from 'http';
 
 const debug = Debug('node-backend:server');
-import { bootstrapLogger } from '@/utils/loggers';
+import { bootstrapLogger, getLogger } from '@/utils/loggers';
 bootstrapLogger();
 
 import { MysqlDateSource } from '@/datasource'
 import { setDefaultScheduler, setupSchedulers } from '@/scheduler';
+import { scheduleJob, scheduledJobs } from 'node-schedule';
 
 MysqlDateSource.initialize()
   .then(async () => {
-    console.log('Data Source has been initialized!')
+    const logger = getLogger('DATABASE')
+    logger.info('Data Source has been initialized!')
     
     // set scheduler
     await setupSchedulers()
     await setDefaultScheduler()
+
   })
   .catch((err) => {
     console.error('Error during Data Source initialization', err)
@@ -34,7 +37,10 @@ const server = http.createServer(app);
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port, () => console.log('🚀 ~ server launch  ~ port', port));
+server.listen(port, () => {
+  const logger = getLogger('SERVER')
+  logger.info('server launched at port', port)
+});
 server.on('error', onError);
 server.on('listening', onListening);
 

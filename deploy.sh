@@ -1,6 +1,7 @@
 #!/bin/bash
 
-BASE_PATH=/home/ec2-user/sport-result/node-backend
+BASE_PATH=/home/ec2-user/sport-result
+BACKEND_PATH=$BASE_PATH/node-backend
 
 # 변경 사항 받아오기
 cd $BASE_PATH
@@ -17,7 +18,7 @@ else
 fi
 
 # 메인 서버 배포
-cd $MAIN_PATH
+cd $BACKEND_PATH
 echo "메인 서버 의존성 확인"
 npm install
 

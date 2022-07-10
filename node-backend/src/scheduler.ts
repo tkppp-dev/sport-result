@@ -80,7 +80,7 @@ async function setKboSchedulers() {
 function setKboMatchUpdateScheduler(startTime: string) {
   const time = startTime.split(':')
   const today = localDate()
-  const cron = `0 ${parseInt(time[1])}/5 ${parseInt(time[0])}-23 ${today.getDate()} ${
+  const cron = `0 ${parseInt(time[1])}/3 ${parseInt(time[0])}-23 ${today.getDate()} ${
     today.getMonth() + 1
   } ?`
 
@@ -125,7 +125,7 @@ async function setLckSchedulers() {
 function setLckMatchScheduler(startTime: string) {
   const time = startTime.split(':')
   const today = localDate()
-  const cron = `15/10 ${parseInt(time[1])}/5 ${parseInt(time[0])}-23 ${today.getDate()} ${
+  const cron = `15 ${parseInt(time[1])}/10 ${parseInt(time[0])}-23 ${today.getDate()} ${
     today.getMonth() + 1
   } ?`
 

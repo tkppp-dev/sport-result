@@ -1,9 +1,10 @@
 const path = require('path')
 
 module.exports = {
-  outputDir: path.resolve(__dirname, '../node-backend/src/public'),
+  publicPath: '/sport-result/',
+  outputDir: '../docs',
   devServer: {
-    port: 3001,
+    port: 4000,
     proxy: {
       '/api/*': {
         target: 'http://localhost:8080/'

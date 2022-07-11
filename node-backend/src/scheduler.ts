@@ -125,9 +125,7 @@ async function setLckSchedulers() {
 function setLckMatchScheduler(startTime: string) {
   const time = startTime.split(':')
   const today = localDate()
-  const cron = `15 ${parseInt(time[1])}/10 ${parseInt(time[0])}-23 ${today.getDate()} ${
-    today.getMonth() + 1
-  } ?`
+  const cron = `15 0/10 ${parseInt(time[0])}-23 ${today.getDate()} ${today.getMonth() + 1} ?`
 
   return scheduleJob(cron, async () => {
     try {

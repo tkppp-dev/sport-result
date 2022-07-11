@@ -27,7 +27,7 @@ MysqlDateSource.initialize()
     console.error('Error during Data Source initialization', err)
   })
 
-const port = normalizePort(process.env.PORT || '80');
+const port = normalizePort(process.env.PORT || '8080');
 app.set('port', port);
 
 const server = http.createServer(app);

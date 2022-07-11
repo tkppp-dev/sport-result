@@ -24,8 +24,8 @@ export default {
   },
   async created() {
     try {
-      const res1 = await axios.get('http://localhost/api/kbo/day')
-      const res2 = await axios.get('http://localhost/api/kbo/rank');
+      const res1 = await axios.get('http://localhost:8080/api/kbo/day')
+      const res2 = await axios.get('http://localhost:8080/api/kbo/rank');
 
       this.todayMatches = res1.data
       this.kboRank = res2.data

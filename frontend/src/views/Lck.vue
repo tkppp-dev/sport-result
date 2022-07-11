@@ -25,7 +25,7 @@ export default {
   },
   async created() {
     try {
-      const res = await axios.get('http://localhost/api/lck/week')
+      const res = await axios.get('http://localhost:8080/api/lck/week')
       this.todayMatches = res.data.todayMatches
       this.weekMatches = res.data.weekMatches
       if(this.weekMatches.length == 0) this.noSchedule = true

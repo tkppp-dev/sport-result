@@ -12,7 +12,6 @@ bootstrapLogger();
 
 import { MysqlDateSource } from '@/datasource'
 import { setDefaultScheduler, setupSchedulers } from '@/scheduler';
-import { scheduleJob, scheduledJobs } from 'node-schedule';
 
 MysqlDateSource.initialize()
   .then(async () => {
@@ -28,7 +27,7 @@ MysqlDateSource.initialize()
     console.error('Error during Data Source initialization', err)
   })
 
-const port = normalizePort(process.env.PORT || '8080');
+const port = normalizePort(process.env.PORT || '80');
 app.set('port', port);
 
 const server = http.createServer(app);

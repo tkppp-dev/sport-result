@@ -2,7 +2,6 @@ import express, { ErrorRequestHandler } from 'express'
 import path from 'path'
 import cookieParser from 'cookie-parser'
 import logger from 'morgan'
-import cors from 'cors'
 import 'reflect-metadata'
 import 'express-async-errors'
 
@@ -21,17 +20,6 @@ class App {
   }
 
   private config() {
-    const whitelist = ['https://tkppp-dev.github.io', 'http://localhost:4000']
-    this.app.use(cors({
-        origin: function (origin: any, callback: any) {
-          if (whitelist.indexOf(origin) !== -1) {
-            callback(null, true)
-          } else {
-            callback(new Error('Not Allowed Origin!'))
-          }
-        },
-      })
-    )
     this.app.use(logger('combined'))
     this.app.use(express.json())
     this.app.use(express.urlencoded({ extended: false }))

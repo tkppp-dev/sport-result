@@ -19,11 +19,14 @@
 3. 일정 및 결과
 
 # 사용 기술 
-~~**Backend(Main Server)** - Kotlin, SpringBoot, JPA, MySQL   
-**Backend(Crawling Server)** - Node.js, Express, Cheerio, puppeteer~~   
 **Backend** - Typescript, Express, Cheerio, puppeteer  
 **Frontend** - Vue.js   
 **DevOps** - AWS EC2, RDS
+
+## 마이그레이션 전 사용 기술
+**마이그레이션 전 소스** : regacy 브랜치  
+**Backend(Main Server)** - Kotlin, SpringBoot, JPA, MySQL   
+**Backend(Crawling Server)** - Node.js, Express, Cheerio, puppeteer  
 
 # 서버 마이그레이션
 ## 마이그레이션 결정 이유

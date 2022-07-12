@@ -19,7 +19,7 @@
 3. 일정 및 결과
 
 # 사용 기술 
-**Backend** - Typescript, Express, Cheerio, puppeteer  
+**Backend** - Typescript, Express, Typeorm, Cheerio, puppeteer  
 **Frontend** - Vue.js   
 **DevOps** - AWS EC2, RDS
 

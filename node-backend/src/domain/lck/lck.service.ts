@@ -7,7 +7,7 @@ import { LoLTeam, LoLTeamName } from './lck.utils'
 import app from '@/app'
 import { JobType } from '@/scheduler'
 import { getLogger } from '@/utils/loggers'
-import { LckDayMatchDto, LckWeekMatchDto } from './lck.dto';
+import { LckDayMatchDto, LckWeekMatchDto } from './lck.dto'
 
 const logger = getLogger('LCK SERVICE')
 
@@ -89,32 +89,30 @@ export async function patchLckTodayMatches() {
     }
   }
 
-  try {
-    if(!flag && !currentMacthInfos.length) {
-      app.locals[JobType.LckMatch].cancel()
-      logger.info('LCK 매치 업데이트 스케줄러 중단')
-    } 
-  } catch (err) {
-    logger.error('LCK 매치 업데이트 스케줄러 중단 실패', err)
+  if(!currentMacthInfos.length) {
+    throw new Error('크롤링 데이터 수집에 문제 발생')
+  } else if (!flag) {
+    app.locals[JobType.LckMatch].cancel()
+    logger.info('LCK 매치 업데이트 스케줄러 중단')
   }
 }
 
 export async function getLckWeekMatches() {
   const weekMatches = await LckMatch.findThisWeekMatches()
   const dto = new LckWeekMatchDto()
-  const group: {[date: string]: LckMatch[]} = {}
-  
-  weekMatches.map(match => {
+  const group: { [date: string]: LckMatch[] } = {}
+
+  weekMatches.map((match) => {
     const date = match.matchDate.toString()
-    if(!(date in group)) {
+    if (!(date in group)) {
       group[date] = []
     }
     group[date].push(match)
   })
 
-  for(let key in group) {
+  for (let key in group) {
     const date = new Date(key).getDate()
-    if(date === localDate().getDate()) {
+    if (date === localDate().getDate()) {
       dto.todayMatches = new LckDayMatchDto(key, group[key])
     }
     dto.weekMatches.push(new LckDayMatchDto(key, group[key]))

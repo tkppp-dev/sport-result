@@ -132,7 +132,7 @@ function setLckMatchScheduler(startTime: string) {
       await patchLckTodayMatches()
       logger.info('LCK 매치 정보 업데이트 성공')
     } catch (err) {
-      logger.error('LCK 매치 정보 업데이트 실패')
+      logger.error('LCK 매치 정보 업데이트 실패 -', (err as Error).message)
     }
   })
 }

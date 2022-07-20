@@ -53,7 +53,7 @@ export async function crawlingLckMonthSchedule(year: number, month: number) {
     broser = await puppeteer.launch()
     const page = await broser.newPage()
     page.setDefaultNavigationTimeout(0)
-    await page.goto(url)
+    await Promise.all([page.waitForNavigation({ waitUntil: 'networkidle0' }), page.goto(url)])
 
     const $ = cheerio.load(await page.content())
     const dto = $("[class*='list_wrap__']")

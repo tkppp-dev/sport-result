@@ -90,7 +90,7 @@ export async function patchLckTodayMatches() {
   }
 
   try {
-    if(flag === 0) {
+    if(!flag && !currentMacthInfos.length) {
       app.locals[JobType.LckMatch].cancel()
       logger.info('LCK 매치 업데이트 스케줄러 중단')
     } 

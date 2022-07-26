@@ -6,7 +6,7 @@
 - KBO Page: http://tkppp-server.tk
 - LCK Page: http://tkppp-server.tk/lck  
   
-cf) 해외 도메인이라 특정 통신사에서는 접속이 안될 수 있음. 그럴 경우 http://13.209.36.27:8080 로 접속
+cf) 해외 도메인이라 특정 통신사에서는 접속이 안될 수 있음. 그럴 경우 http://158.247.218.216/ 로 접속
 
 # 구현 범위
 1. KBO - 완료

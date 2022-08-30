@@ -1,65 +1,56 @@
-import { KboMatch } from './domain/kbo/kboMatch'
+import { KboMatch } from '../domain/kbo/kboMatch'
 import { localDate } from '@/utils/date'
 import { scheduleJob, Job, } from 'node-schedule'
 import { getLogger } from '@/utils/loggers'
 import { patchKboMatches, putKboTeamRank } from '@/domain/kbo/kbo.service'
-import app from './app'
-import { patchLckTodayMatches } from './domain/lck/lck.service'
-import { LckMatch } from './domain/lck/lckMatch'
+import { patchLckTodayMatches } from '../domain/lck/lck.service'
+import { LckMatch } from '../domain/lck/lckMatch'
+import app from '../app'
 
 const logger = getLogger('SCHEDULER')
+
 export enum JobType {
   KboMatch = 'kboMatch',
   KboRank = 'kboRank',
   LckMatch = 'lckMatch',
 }
 
-export async function setDefaultScheduler() {
+export async function setupDefaultScheduler() {
   const cron = '0 0 6 * * *'
   scheduleJob(cron, async function () {
     logger.info('정기 스케줄링 실행')
+    await tearDownSchedulers()
     await setupSchedulers()
   })
-}
-
-export async function setupSchedulers() {
-  // cancel job
-  await tearDownSchedulers()
-  // schedule job
-  logger.info('스케줄러 셋업 시작')
-  await setKboSchedulers()
-  await setLckSchedulers()
-  logger.info('스케줄러 셋업 완료')
 }
 
 async function tearDownSchedulers() {
   try {
     logger.info('스케줄링 데이터 삭제 시작')
-    const kboMatchJob = app.locals[JobType.KboMatch]
-    if (kboMatchJob instanceof Job) {
-      kboMatchJob.cancel()
-      app.locals[JobType.KboMatch] = undefined
-      logger.info('KBO 매치 정보 스케줄러 취소')
-    }
-
-    const kboRankJob = app.locals[JobType.KboRank]
-    if (kboRankJob instanceof Job) {
-      kboRankJob.cancel()
-      app.locals[JobType.KboMatch] = undefined
-      logger.info('KBO 순위 정보 스케줄러 취소')
-    }
-
-    const lckMatchJob = app.locals[JobType.LckMatch]
-    if (lckMatchJob instanceof Job) {
-      lckMatchJob.cancel()
-      app.locals[JobType.LckMatch] = undefined
-      logger.info('LCK 매치 정보 스케줄러 취소')
-    }
-
+    tearDownJob(JobType.KboMatch)
+    tearDownJob(JobType.KboRank)
+    tearDownJob(JobType.LckMatch)
     logger.info('스케줄링 데이터 삭제 완료')
   } catch (err) {
     logger.error('스케줄링 데이터 삭제 중 에러 발생', err)
   }
+}
+
+function tearDownJob(jobType: JobType) {
+  const job = app.locals[jobType]
+  if(job instanceof Job) {
+    job.cancel()
+    app.locals[jobType] = undefined
+    logger.info(`${jobType} 스케줄러 취소`)
+  }
+}
+
+export async function setupSchedulers() {
+  // schedule job
+  logger.info('스케줄러 셋업 시작')
+  await setKboSchedulers()
+  await setLckSchedulers()
+  logger.info('스케줄러 셋업 완료')
 }
 
 async function setKboSchedulers() {

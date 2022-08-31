@@ -1,11 +1,11 @@
 import { crawlingLckMatchResult, crawlingLckMonthSchedule } from './lck.crawling'
-import { MysqlDateSource } from '../../datasource'
+import { MysqlDateSource } from '../../config/config.db'
 import { LckMatch } from './lckMatch'
 import moment from 'moment'
 import { localDate, localTime } from '@/utils/date'
 import { LoLTeam, LoLTeamName } from './lck.utils'
 import app from '@/app'
-import { JobType } from '@/scheduler'
+import { JobType } from '@/config/config.scheduler'
 import { getLogger } from '@/utils/loggers'
 import { LckDayMatchDto, LckWeekMatchDto } from './lck.dto'
 

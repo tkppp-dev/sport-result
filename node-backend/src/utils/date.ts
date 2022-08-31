@@ -1,7 +1,7 @@
 import moment from 'moment-timezone'
 
-declare type DateOptions = { year?: number; month?: number; day?: number }
-declare type TimeOptions = { hour?: number; minute?: number; second?: number }
+export type DateOptions = { year?: number; month?: number; day?: number }
+export type TimeOptions = { hour?: number; minute?: number; second?: number }
 
 export function getDate() {
   const now = moment().tz('Asia/Seoul').format('YYYY-MM-DD hh:mm:ss')

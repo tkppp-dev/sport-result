@@ -3,13 +3,16 @@ import * as cheerio from 'cheerio'
 import moment from 'moment'
 import { localDate } from '@/utils/date'
 
-const season = '2022 LCK 서머'
+const season = process.env.LCK_SEASON as string
 
 export async function crawlingLckMatchResult() {
   let broser
   try {
     const url = 'https://game.naver.com/esports'
-    broser = await puppeteer.launch()
+    broser = await puppeteer.launch({
+      executablePath: process.env.CHROMIUM_PATH,
+      args: ['--no-sandbox'], 
+    })
     const page = await broser.newPage()
     page.setDefaultNavigationTimeout(0)
     await page.goto(url)
@@ -50,7 +53,10 @@ export async function crawlingLckMonthSchedule(year: number, month: number) {
   try {
     const date = moment(localDate({ year, month })).format('YYYY-MM')
     const url = `https://game.naver.com/esports/schedule/lck?date=${date}`
-    broser = await puppeteer.launch()
+    broser = await puppeteer.launch({
+      executablePath: process.env.CHROMIUM_PATH,
+      args: ['--no-sandbox'],
+    })
     const page = await broser.newPage()
     page.setDefaultNavigationTimeout(0)
     await Promise.all([page.waitForNavigation({ waitUntil: 'networkidle0' }), page.goto(url)])

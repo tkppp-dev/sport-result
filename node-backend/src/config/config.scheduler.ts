@@ -2,10 +2,11 @@ import { KboMatch } from '../domain/kbo/domain/model/kboMatch'
 import { localDate } from '@/utils/date'
 import { scheduleJob, Job, } from 'node-schedule'
 import { getLogger } from '@/utils/loggers'
-import { patchKboMatches, putKboTeamRank } from '@/domain/kbo/service/kbo.match.service'
+import { patchKboMatches } from '@/domain/kbo/service/kbo.match.service'
 import { patchLckTodayMatches } from '../domain/lck/lck.service'
 import { LckMatch } from '../domain/lck/lckMatch'
 import app from '../app'
+import { putKboTeamRank } from '@/domain/kbo/service/kbo.rank.service'
 
 const logger = getLogger('SCHEDULER')
 

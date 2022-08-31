@@ -28,7 +28,7 @@ class App {
   }
 
   private config() {
-    this.app.use(logger('combined'))
+    this.app.use(logger('dev'))
     this.app.use(express.json())
     this.app.use(express.urlencoded({ extended: false }))
     this.app.use(cookieParser())
@@ -61,7 +61,7 @@ const app = new App().app
 const port = process.env.PORT || '8080'
 app.set('port', port)
 
-app.listen(() => {
+app.listen(port, () => {
   const logger = getLogger('SERVER')
   logger.info('server launched at port', port)
 })

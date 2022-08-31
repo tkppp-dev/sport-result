@@ -1,9 +1,25 @@
 import { parseMonthString } from '@/utils/date'
 import axios from 'axios'
 import * as cheerio from 'cheerio'
-import { NextFunction } from 'express'
 
-export async function crawlingKboMatchDetail() {
+export interface KboMatchDetail {
+  home: string,
+  away: string,
+  homeScore: number,
+  awayScore: number,
+  matchProgress: string
+}
+
+export interface KboScheduleDetail extends KboMatchDetail {
+  startTime: string[]
+}
+
+export interface KboSchedule {
+  matchDate: number[]
+  matchInfo: KboScheduleDetail[]
+}
+
+export async function crawlingKboMatchDetail(): Promise<KboMatchDetail[]> {
   const url = 'https://sports.news.naver.com/kbaseball/index'
   const html = await axios.get(url)
   const $ = cheerio.load(html.data)
@@ -64,7 +80,7 @@ export async function crawlingKboTeamRanking() {
   return rankData
 }
 
-export async function crawlingKboSchedule(year: number, month: number) {
+export async function crawlingKboSchedule(year: number, month: number): Promise<KboSchedule[]> {
   const url = `https://sports.news.naver.com/kbaseball/schedule/index?month=${parseMonthString(
     month
   )}&year=${year}`

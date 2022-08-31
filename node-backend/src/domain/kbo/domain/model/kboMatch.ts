@@ -1,7 +1,7 @@
 import { localDate, localDatetime } from '@/utils/date'
 import moment from 'moment'
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
-import { MatchProgress, Team, matchProgressEnum, teamEnum } from './kbo.utils'
+import { MatchProgress, Team, matchProgressEnum, teamEnum } from './vo/kbo.vo'
 
 @Entity()
 export class KboMatch extends BaseEntity {

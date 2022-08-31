@@ -1,8 +1,7 @@
-import { localTime } from '@/utils/date'
 import moment from 'moment'
-import { Team, MatchProgress, getTeamCode } from './kbo.utils'
-import { KboMatch } from './kboMatch'
-import { KboRank } from './kboRank'
+import { Team, MatchProgress, getTeamCode } from '../domain/model/vo/kbo.vo'
+import { KboMatch } from '../domain/model/kboMatch'
+import { KboRank } from '../domain/model/kboRank'
 
 export class KboDayMatchPatchReqDto {
   readonly home: Team

@@ -1,4 +1,6 @@
-import { setupSchedulers, setupDefaultScheduler } from '@/scheduler';
+import { setupSchedulers, setupDefaultScheduler } from '@/config/config.scheduler'
 
-setupSchedulers()
-setupDefaultScheduler()
+export default async function loadScheduler() {
+  await setupSchedulers()
+  await setupDefaultScheduler()
+}

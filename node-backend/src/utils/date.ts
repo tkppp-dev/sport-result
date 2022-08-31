@@ -9,10 +9,10 @@ export function getDate() {
 }
 
 export function getKorDayOfWeek(date: string | Date) {
-  let dayOfWeek
+  let dayOfWeek: number
   if (typeof date === 'string') {
     dayOfWeek = new Date(date).getDay()
-  } else if (date instanceof Date) {
+  } else {
     dayOfWeek = date.getDay()
   }
 

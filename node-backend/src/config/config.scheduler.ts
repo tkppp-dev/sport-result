@@ -30,7 +30,7 @@ async function tearDownSchedulers() {
     tearDownJob(JobType.KboMatch)
     tearDownJob(JobType.KboRank)
     tearDownJob(JobType.LckMatch)
-    logger.info('스케줄링 데이터 삭제 완료')
+    logger.info('스케줄링 데이터 삭제 종료')
   } catch (err) {
     logger.error('스케줄링 데이터 삭제 중 에러 발생', err)
   }
@@ -50,7 +50,7 @@ export async function setupSchedulers() {
   logger.info('스케줄러 셋업 시작')
   await setKboSchedulers()
   await setLckSchedulers()
-  logger.info('스케줄러 셋업 완료')
+  logger.info('스케줄러 셋업 종료')
 }
 
 async function setKboSchedulers() {

@@ -14,7 +14,7 @@ import setupLoader from './loaders/loader'
 setupLoader().then(() => {})
 
 // route
-import KboRouter from './domain/kbo/kbo.controller'
+import KboRouter from './domain/kbo/ui/kbo.controller'
 import LckRouter from '@/domain/lck/lck.controller'
 
 class App {

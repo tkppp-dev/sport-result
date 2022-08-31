@@ -1,6 +1,6 @@
 import { DataSource } from "typeorm";
-import { KboMatch } from "../domain/kbo/kboMatch";
-import { KboRank } from '../domain/kbo/kboRank';
+import { KboMatch } from "../domain/kbo/domain/model/kboMatch";
+import { KboRank } from '../domain/kbo/domain/model/kboRank';
 import { LckMatch } from '../domain/lck/lckMatch';
 
 const host = process.env.DB_HOST

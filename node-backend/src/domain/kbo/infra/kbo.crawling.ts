@@ -1,4 +1,4 @@
-import { parseMonthString } from '@/utils/date'
+import { DateUtils } from '@/utils/dateUtils'
 import axios from 'axios'
 import * as cheerio from 'cheerio'
 
@@ -81,9 +81,7 @@ export async function crawlingKboTeamRanking() {
 }
 
 export async function crawlingKboSchedule(year: number, month: number): Promise<KboSchedule[]> {
-  const url = `https://sports.news.naver.com/kbaseball/schedule/index?month=${parseMonthString(
-    month
-  )}&year=${year}`
+  const url = `https://sports.news.naver.com/kbaseball/schedule/index?month=${DateUtils.addZero(month)}&year=${year}`
   const html = await axios.get(url)
   const $ = cheerio.load(html.data)
 

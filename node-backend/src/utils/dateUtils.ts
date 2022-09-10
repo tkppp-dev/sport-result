@@ -69,4 +69,42 @@ export class DateUtils {
     if (param < 10) return '0' + param
     else return '' + param
   }
+
+  static getKorDayOfWeek(date: string | Date) {
+    let dayOfWeek: number
+    if (typeof date === 'string') {
+      dayOfWeek = new Date(date).getDay()
+    } else {
+      dayOfWeek = date.getDay()
+    }
+  
+    let korDayOfWeek
+    switch (dayOfWeek) {
+      case 0:
+        korDayOfWeek = '(일)'
+        break
+      case 1:
+        korDayOfWeek = '(월)'
+        break
+      case 2:
+        korDayOfWeek = '(화)'
+        break
+      case 3:
+        korDayOfWeek = '(수)'
+        break
+      case 4:
+        korDayOfWeek = '(목)'
+        break
+      case 5:
+        korDayOfWeek = '(금)'
+        break
+      case 6:
+        korDayOfWeek = '(토)'
+        break
+      default:
+        break
+    }
+  
+    return korDayOfWeek
+  }
 }

@@ -1,5 +1,6 @@
-import { getKorDayOfWeek } from '@/utils/date';
+import { DateUtils } from '@/utils/dateUtils';
 import { LckMatch } from './lckMatch';
+
 export class LckDayMatchDto {
   date: string
   matches: {
@@ -11,7 +12,7 @@ export class LckDayMatchDto {
   }[]
 
   constructor(date: string, matches: LckMatch[]) {
-    this.date = date + ` ${getKorDayOfWeek(date)}`
+    this.date = date + ` ${DateUtils.getKorDayOfWeek(date)}`
     this.matches = matches.map((match => {
       return {
         state: match.matchProgress,

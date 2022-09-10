@@ -2,6 +2,7 @@ import moment from 'moment'
 import { Team, MatchProgress, getTeamCode } from '../domain/model/vo/kbo.vo'
 import { KboMatch } from '../domain/model/kboMatch'
 import { KboRank } from '../domain/model/kboRank'
+import { DateUtils } from '../../../utils/dateUtils';
 
 export class KboDayMatchPatchReqDto {
   readonly home: Team
@@ -38,8 +39,8 @@ export class KboDayMatchGetResDto {
     this.homeCode = getTeamCode(match.home)
     this.awayCode = getTeamCode(match.away)
     this.matchProgress = match.matchProgress
-    this.matchDate = moment(match.matchDate).format('YYYYMMDD')
-    this.startTime = match.startTime.toString().split(':').slice(0, 2).join(':')
+    this.matchDate = moment(match.matchDatetime).format('YYYYMMDD')
+    this.startTime = DateUtils.parseHourMinuteString(match.matchDatetime)
   }
 }
 

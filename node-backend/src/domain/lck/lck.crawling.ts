@@ -1,7 +1,7 @@
 import puppeteer from 'puppeteer'
 import * as cheerio from 'cheerio'
 import moment from 'moment'
-import { localDate } from '@/utils/date'
+import { DateUtils } from '../../utils/dateUtils'
 
 const season = process.env.LCK_SEASON as string
 
@@ -11,7 +11,7 @@ export async function crawlingLckMatchResult() {
     const url = 'https://game.naver.com/esports'
     broser = await puppeteer.launch({
       executablePath: process.env.CHROMIUM_PATH,
-      args: ['--no-sandbox'], 
+      args: ['--no-sandbox'],
     })
     const page = await broser.newPage()
     page.setDefaultNavigationTimeout(0)
@@ -51,7 +51,7 @@ export async function crawlingLckMatchResult() {
 export async function crawlingLckMonthSchedule(year: number, month: number) {
   let broser
   try {
-    const date = moment(localDate({ year, month })).format('YYYY-MM')
+    const date = moment(new Date(year, month)).format('YYYY-MM')
     const url = `https://game.naver.com/esports/schedule/lck?date=${date}`
     broser = await puppeteer.launch({
       executablePath: process.env.CHROMIUM_PATH,
@@ -88,11 +88,7 @@ export async function crawlingLckMonthSchedule(year: number, month: number) {
             .toArray()
 
           return {
-            date: localDate({
-              year,
-              month: parseInt(date[0].slice(0, 2)),
-              day: parseInt(date[1].slice(0, 2)),
-            }),
+            date: new Date(year, parseInt(date[0].slice(0, 2)), parseInt(date[1].slice(0, 2))),
             matches,
           }
         } else {

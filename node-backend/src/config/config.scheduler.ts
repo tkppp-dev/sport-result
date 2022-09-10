@@ -1,12 +1,12 @@
 import { KboMatch } from '../domain/kbo/domain/model/kboMatch'
-import { localDate } from '@/utils/date'
-import { scheduleJob, Job, } from 'node-schedule'
+import { scheduleJob, Job } from 'node-schedule'
 import { getLogger } from '@/utils/loggers'
 import { patchKboMatches } from '@/domain/kbo/service/kbo.match.service'
 import { patchLckTodayMatches } from '../domain/lck/lck.service'
 import { LckMatch } from '../domain/lck/lckMatch'
-import app from '../app'
+import { app } from '../app'
 import { putKboTeamRank } from '@/domain/kbo/service/kbo.rank.service'
+import { DateUtils } from '@/utils/dateUtils'
 
 const logger = getLogger('SCHEDULER')
 
@@ -39,7 +39,7 @@ async function tearDownSchedulers() {
 
 function tearDownJob(jobType: JobType) {
   const job = app.locals[jobType]
-  if(job instanceof Job) {
+  if (job instanceof Job) {
     job.cancel()
     app.locals[jobType] = undefined
     logger.info(`${jobType} 스케줄러 취소`)
@@ -58,7 +58,9 @@ async function setKboSchedulers() {
   try {
     const dayMatches = await KboMatch.findTodayMatches()
     if (dayMatches.length > 0) {
-      app.locals[JobType.KboMatch] = setKboMatchUpdateScheduler(dayMatches[0].startTime.toString())
+      app.locals[JobType.KboMatch] = setKboMatchUpdateScheduler(
+        DateUtils.parseHourMinuteString(dayMatches[0].matchDatetime)
+      )
       app.locals[JobType.KboRank] = await setKboRankUpdateScheduler()
       logger.info('KBO 스케줄링 완료')
     } else {
@@ -71,7 +73,7 @@ async function setKboSchedulers() {
 
 function setKboMatchUpdateScheduler(startTime: string) {
   const time = startTime.split(':')
-  const today = localDate()
+  const today = new Date()
   const cron = `0 ${parseInt(time[1])}/3 ${parseInt(time[0])}-23 ${today.getDate()} ${
     today.getMonth() + 1
   } ?`
@@ -87,7 +89,7 @@ function setKboMatchUpdateScheduler(startTime: string) {
 }
 
 async function setKboRankUpdateScheduler() {
-  const today = localDate()
+  const today = new Date()
   const cron = `0 30/15 21-23 ${today.getDate()} ${today.getMonth() + 1} ?`
 
   return scheduleJob(cron, async () => {
@@ -116,7 +118,7 @@ async function setLckSchedulers() {
 
 function setLckMatchScheduler(startTime: string) {
   const time = startTime.split(':')
-  const today = localDate()
+  const today = new Date()
   const cron = `15 0/10 ${parseInt(time[0])}-23 ${today.getDate()} ${today.getMonth() + 1} ?`
 
   return scheduleJob(cron, async () => {

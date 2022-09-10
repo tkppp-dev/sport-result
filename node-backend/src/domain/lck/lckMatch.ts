@@ -1,7 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from 'typeorm';
 import { MatchProgress, LoLTeam } from './lck.utils';
 import moment from 'moment';
-import { localDate } from '@/utils/date';
 
 @Entity()
 export class LckMatch extends BaseEntity {
@@ -49,14 +48,14 @@ export class LckMatch extends BaseEntity {
 
   static findTodayMatches(){
     return this.createQueryBuilder()
-      .where('matchDate = :today', {today: moment(localDate()).format('YYYY-MM-DD')})
+      .where('matchDate = :today', {today: moment(new Date()).format('YYYY-MM-DD')})
       .getMany()
   }
 
   static findThisWeekMatches() {
-    const startDate = localDate()
-    const endDate = localDate()
-    let dayOffset = localDate().getDay()
+    const startDate = new Date()
+    const endDate = new Date()
+    let dayOffset = new Date().getDay()
     dayOffset = dayOffset === 0 ? 6 : dayOffset - 1
 
     startDate.setDate(startDate.getDate() - dayOffset)

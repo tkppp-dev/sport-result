@@ -1,5 +1,3 @@
-import { localDate } from '@/utils/date';
-import moment from 'moment';
 import { Column, Entity, PrimaryGeneratedColumn, BaseEntity } from 'typeorm';
 import { Team, teamEnum } from './vo/kbo.vo'
 

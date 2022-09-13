@@ -12,7 +12,5 @@ export const MysqlDataSource = new DataSource({
   database: 'sport_result',
   entities: [KboMatch, KboRank, LckMatch],
   timezone: '+09:00',
-  dropSchema: true,
-  synchronize: true,
   logging: false,
 })

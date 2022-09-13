@@ -1,10 +1,8 @@
+import { app } from '@/app' 
 import { MysqlDateSource } from '@/config/config.db'
-import { crawlingKboMatchDetail, crawlingKboSchedule, crawlingKboTeamRanking } from '../infra/kbo.crawling'
-import { KboDayMatchGetResDto, KboRankGetResDto } from '../utils/kbo.dto'
-import { Team, MatchProgress } from '../domain/model/vo/kbo.vo'
+import { crawlingKboMatchDetail, crawlingKboSchedule } from '../infra/kbo.crawling'
+import { KboDayMatchGetResDto } from '../utils/kbo.dto'
 import { KboMatch } from '../domain/model/kboMatch'
-import { KboRank } from '../domain/model/kboRank'
-import app from '@/app' 
 import { JobType } from '@/config/config.scheduler'
 import { getLogger } from '@/utils/loggers'
 import { deleteMonthlyKboSchedule, saveMonthlyKboSchedule, updateKboMatch } from '../domain/service/kboMatch.service'
@@ -21,7 +19,7 @@ export async function putKboMonthSchedule(year: number, month: number) {
   try {
     const matchRepo = qr.manager.getRepository(KboMatch)
     await deleteMonthlyKboSchedule(matchRepo, year, month)
-    await saveMonthlyKboSchedule(matchRepo, schedules, year, month)
+    await saveMonthlyKboSchedule(matchRepo, schedules)
     await qr.commitTransaction()
   } catch (err) {
     await qr.rollbackTransaction()

@@ -32,7 +32,7 @@ export async function putKboTeamRank() {
       }
     } else {
       for (let i = 0; i < 10; i++) {
-        updateKboRanking(repository, rankEntities[i], ranking[i])
+        await updateKboRanking(repository, rankEntities[i], ranking[i])
       }
     }
     await qr.commitTransaction()

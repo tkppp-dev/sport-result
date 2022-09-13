@@ -1,9 +1,8 @@
-import { localDate, localTime } from '@/utils/date'
-import moment from 'moment'
 import { Repository } from 'typeorm'
 import { KboMatchDetail, KboSchedule } from '../../infra/kbo.crawling'
 import { KboMatch } from '../model/kboMatch'
 import { MatchProgress, Team } from '../model/vo/kbo.vo'
+import { DateUtils } from '@/utils/dateUtils'
 
 export async function deleteMonthlyKboSchedule(
   repository: Repository<KboMatch>,
@@ -13,30 +12,29 @@ export async function deleteMonthlyKboSchedule(
   await repository
     .createQueryBuilder()
     .delete()
-    .where('matchDate >= :start', {
-      start: moment(localDate({ year, month, day: 1 })).format('YYYY-MM-DD'),
-    })
-    .andWhere('matchDate <= :end', {
-      end: moment(localDate({ year, month: month + 1, day: 0 })).format('YYYY-MM-DD'),
+    .where('matchDatetime >= :start and matchDatetime <= :end', {
+      start: DateUtils.getDatetime({ year, month, day: 1 }),
+      end: DateUtils.getDatetime({ year, month: month + 1, day: 0 }),
     })
     .execute()
 }
 
 export async function saveMonthlyKboSchedule(
   repository: Repository<KboMatch>,
-  matchSchedules: KboSchedule[],
-  year: number,
-  month: number
+  matchSchedules: KboSchedule[]
 ) {
   for (let daySchedules of matchSchedules) {
-    const matchDate = localDate({ year, month, day: daySchedules.matchDate[2] })
+    const matchDate = daySchedules.matchDate
     for (let match of daySchedules.matchInfo) {
+      const matchDatetime = DateUtils.getDatetime({
+        year: matchDate[0],
+        month: matchDate[1],
+        day: matchDate[2],
+        hour: parseInt(match.startTime[0]),
+        min: parseInt(match.startTime[1]),
+      })
       const entity = repository.create({
-        matchDate,
-        startTime: localTime({
-          hour: parseInt(match.startTime[0]),
-          minute: parseInt(match.startTime[1]),
-        }),
+        matchDatetime,
         matchProgress: match.matchProgress as MatchProgress,
         home: match.home as Team,
         away: match.away as Team,
@@ -48,7 +46,10 @@ export async function saveMonthlyKboSchedule(
   }
 }
 
-export async function updateKboMatch(match: KboMatch, currentMatchDetails: KboMatchDetail[]): Promise<0 | 1> {
+export async function updateKboMatch(
+  match: KboMatch,
+  currentMatchDetails: KboMatchDetail[]
+): Promise<0 | 1> {
   if (match.matchProgress === '경기취소' || match.matchProgress === '종료') {
     return 1
   } else {

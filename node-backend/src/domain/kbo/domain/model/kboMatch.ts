@@ -1,18 +1,14 @@
-import { localDate, localDatetime } from '@/utils/date'
-import moment from 'moment'
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, ValueTransformer } from 'typeorm'
 import { MatchProgress, Team, matchProgressEnum, teamEnum } from './vo/kbo.vo'
+import { DateUtils } from '../../../../utils/dateUtils';
 
 @Entity()
 export class KboMatch extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number
 
-  @Column({ type: 'date', nullable: false })
-  matchDate: Date
-
-  @Column({ type: 'time', nullable: false })
-  startTime: Date
+  @Column({ type: 'datetime', nullable: false })
+  matchDatetime: Date
 
   @Column({
     type: 'enum',
@@ -48,8 +44,11 @@ export class KboMatch extends BaseEntity {
   awayScore: number
 
   static findTodayMatches() {
+    const start = DateUtils.getDatetime()
+    const end = DateUtils.getDatetime({hour: 23, min: 59, sec: 59, ms: 999})
+
     return this.createQueryBuilder()
-      .where('matchDate = :today', {today: moment(localDate()).format('YYYY-MM-DD')})
+      .where('matchDatetime >= :start and matchDatetime <= :end', { start, end })
       .getMany()
   }
 }

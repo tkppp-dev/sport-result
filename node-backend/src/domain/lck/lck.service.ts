@@ -2,12 +2,12 @@ import { crawlingLckMatchResult, crawlingLckMonthSchedule } from './lck.crawling
 import { MysqlDateSource } from '../../config/config.db'
 import { LckMatch } from './lckMatch'
 import moment from 'moment'
-import { localDate, localTime } from '@/utils/date'
 import { LoLTeam, LoLTeamName } from './lck.utils'
-import app from '@/app'
+import { app } from '@/app'
 import { JobType } from '@/config/config.scheduler'
 import { getLogger } from '@/utils/loggers'
 import { LckDayMatchDto, LckWeekMatchDto } from './lck.dto'
+import { DateUtils } from '../../utils/dateUtils';
 
 const logger = getLogger('LCK SERVICE')
 
@@ -25,10 +25,10 @@ export async function putLckMonthSchedule(year: number, month: number) {
       .createQueryBuilder()
       .delete()
       .where('matchDate >= :start', {
-        start: moment(localDate({ year, month, day: 1 })).format('YYYY-MM-DD'),
+        start: moment(DateUtils.getDatetime({ year, month, day: 1 })).format('YYYY-MM-DD'),
       })
       .andWhere('matchDate <= :end', {
-        end: moment(localDate({ year, month: month + 1, day: 0 })).format('YYYY-MM-DD'),
+        end: moment(DateUtils.getDatetime({ year, month, day: 1 })).format('YYYY-MM-DD'),
       })
       .execute()
 
@@ -37,9 +37,9 @@ export async function putLckMonthSchedule(year: number, month: number) {
       for (let schedule of daySchedule.matches) {
         const entity = new LckMatch()
         entity.matchDate = daySchedule.date
-        entity.startTime = localTime({
+        entity.startTime = DateUtils.getDatetime({
           hour: parseInt(schedule.startTime[0]),
-          minute: parseInt(schedule.startTime[1]),
+          min: parseInt(schedule.startTime[1]),
         })
         entity.matchProgress = schedule.state
         entity.home = schedule.home
@@ -112,7 +112,7 @@ export async function getLckWeekMatches() {
 
   for (let key in group) {
     const date = new Date(key).getDate()
-    if (date === localDate().getDate()) {
+    if (date === new Date().getDate()) {
       dto.todayMatches = new LckDayMatchDto(key, group[key])
     }
     dto.weekMatches.push(new LckDayMatchDto(key, group[key]))

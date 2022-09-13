@@ -80,4 +80,32 @@ describe('DateUtils class test', () => {
       expect(DateUtils.addZero('7')).toBe('07')
     })
   })
+
+  describe('DateUtils.getKorDayOfWeek', () => {
+    test('should return Korean Date string when param is Date Object', () => {
+      // given
+      const korDate = ['(일)', '(월)', '(화)', '(수)', '(목)', '(금)', '(토)']
+      const date = new Date()
+
+      // when, then
+      for(let i=0; i<7; i++) {
+        const day = date.getDay()
+        expect(DateUtils.getKorDayOfWeek(date)).toBe(korDate[day])
+        date.setDate(date.getDate() + 1)
+      }
+    })
+
+    test('should return Korean Date string when param is date string', () => {
+      // given
+      const korDate = ['(일)', '(월)', '(화)', '(수)', '(목)', '(금)', '(토)']
+      const date = new Date()
+
+      // when, then
+      for(let i=0; i<7; i++) {
+        const day = date.getDay()
+        expect(DateUtils.getKorDayOfWeek(date.toString())).toBe(korDate[day])
+        date.setDate(date.getDate() + 1)
+      }
+    })
+  })
 })

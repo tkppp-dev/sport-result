@@ -7,20 +7,21 @@ import { KboSchedule, KboScheduleDetail } from '@/domain/kbo/infra/kbo.crawling'
 import { DateUtils } from '@/utils/dateUtils';
 import { MatchProgress } from '@/domain/kbo/domain/model/vo/kbo.vo'
 
-beforeAll(async () => {
-  await loadDbConnection(MysqlDataSource)
-})
-
-beforeEach(async () => {
-  await KboMatch.clear()
-})
-
-afterAll(async () => {
-  await MysqlDataSource.destroy()
-})
-
 describe('Testing Domain Service - KboMatch', () => {
   const year = 2022, month = 9
+
+  beforeAll(async () => {
+    await loadDbConnection(MysqlDataSource)
+  })
+  
+  afterAll(async () => {
+    await MysqlDataSource.destroy()
+  })
+
+  beforeEach(async () => {
+    await KboMatch.clear()
+  })
+  
   describe('deleteMonthlyKboSchedule()', () => {
     test('should delete all matches in 2022/9', async () => {
       // given

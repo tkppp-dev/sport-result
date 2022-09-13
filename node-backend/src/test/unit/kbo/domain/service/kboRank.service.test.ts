@@ -5,18 +5,12 @@ import { KboRank } from '@/domain/kbo/domain/model/kboRank'
 import { findKboRankOrderByAsc, updateKboRanking } from '@/domain/kbo/domain/service/kboRank.service'
 import { Repository } from 'typeorm'
 
-beforeAll(async () => {
-  await loadDbConnection(MysqlDataSource)
-})
-
-afterAll(async () => {
-  await MysqlDataSource.destroy()
-})
 
 describe('Testing Domain Service - KboRank', () => {
   let repository: Repository<KboRank>
 
   beforeAll(async () => {
+    await loadDbConnection(MysqlDataSource)
     repository = KboRank.getRepository()
     await KboRank.save(
       teamEnum.map((team, idx) => {
@@ -32,6 +26,11 @@ describe('Testing Domain Service - KboRank', () => {
         })
       })
     )
+  })
+  
+  afterAll(async () => {
+    await KboRank.clear()
+    await MysqlDataSource.destroy()
   })
 
   describe('findKboRankOrderByAsc()', () => {

@@ -4,15 +4,15 @@ import { KboMatch } from '@/domain/kbo/domain/model/kboMatch'
 import { createKboMatchEntity } from '../../../../helpers/createEntity';
 import { DatetimeOpts } from '../../../../../utils/dateUtils';
 
-beforeAll(async () => {
-  await loadDbConnection(MysqlDataSource)
-})
-
-afterAll(async () => {
-  await MysqlDataSource.destroy()
-})
-
 describe('Testing Active Record Method', () => {
+  beforeAll(async () => {
+    await loadDbConnection(MysqlDataSource)
+  })
+  
+  afterAll(async () => {
+    await MysqlDataSource.destroy()
+  })
+
   beforeEach(async () => {
     await KboMatch.clear()
   })

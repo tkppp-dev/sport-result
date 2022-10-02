@@ -3,6 +3,7 @@ import { LolMatch } from '../domain/model/lol.match';
 import { MatchProgress, lolTeamAlias } from '../domain/model/lol.vo';
 
 export interface LolDayMatchDto {
+  startTime: string
   state: MatchProgress,
   home: string,
   away: string,
@@ -24,6 +25,7 @@ export function getLolDayMatchesDto(date: string, entities: LolMatch[] = []): Lo
   const matches = entities.map(entity => {
     return {
       state: entity.matchProgress,
+      startTime: DateUtils.parseHourMinuteString(entity.matchDatetime),
       home: lolTeamAlias[entity.home],
       away: lolTeamAlias[entity.away],
       homeScore: entity.homeScore,

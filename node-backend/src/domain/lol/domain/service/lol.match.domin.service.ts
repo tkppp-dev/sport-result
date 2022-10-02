@@ -1,8 +1,8 @@
 import { DateUtils } from '@/utils/dateUtils'
 import { Repository } from 'typeorm'
 import { LolMatch } from '../model/lol.match'
-import { lolDaySchedule } from '../../infra/lol.crawling'
-import { MatchProgress } from '../model/lol.vo'
+import { CurrentMatchDetail, lolDaySchedule } from '../../infra/lol.crawling'
+import { MatchProgress } from '../model/lol.vo';
 
 export async function deleteMonthlyLolSchedule(
   repo: Repository<LolMatch>,
@@ -40,7 +40,8 @@ export async function saveMonthlyLolSchedule(
   }
 }
 
-export async function findLolWeekMatches(repo: Repository<LolMatch>) {
+export async function findLolWeekMatches() {
+  const repo = LolMatch.getRepository()
   const start = DateUtils.getDatetime()
   const end = DateUtils.getDatetime()
   let dayOffset = new Date().getDay()
@@ -56,4 +57,26 @@ export async function findLolWeekMatches(repo: Repository<LolMatch>) {
       end,
     })
     .getMany()
+}
+
+export async function findLolTodayMatches() {
+  const repo = LolMatch.getRepository()
+  const start = DateUtils.getDatetime()
+  const end = DateUtils.getDatetime({ day: start.getDate() + 1 })
+
+  return repo
+    .createQueryBuilder()
+    .where('matchDatetime >= :start and matchDatetime < :end', {
+      start,
+      end,
+    })
+    .getMany()
+}
+
+export async function updateTodayLolMatch(entity: LolMatch, match: CurrentMatchDetail) {
+  entity.homeScore = match.homeScore
+  entity.awayScore = match.awayScore
+  entity.matchProgress = match.state as MatchProgress
+
+  await entity.save()
 }

@@ -10,8 +10,7 @@ export class LolMatch extends BaseEntity {
   matchDatetime: Date
 
   @Column({
-    type: 'enum',
-    enum: LoLProgress,
+    type: 'varchar',
     nullable: false
   })
   matchProgress: MatchProgress

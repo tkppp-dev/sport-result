@@ -4,7 +4,7 @@
       <router-link class="nav-item" to="/">KBO</router-link>
     </div>
     <div class="nav-item-wrapper" :class="{ selected: isLckSelected}">
-      <router-link class="nav-item" to="/lck">LCK</router-link>
+      <router-link class="nav-item" to="/lck">LOL</router-link>
     </div>
     <div class="nav-item-wrapper" :class="{ selected: isNbaSelected}">
       <router-link class="nav-item" to="/nba">NBA</router-link>

@@ -1,7 +1,6 @@
 import puppeteer from 'puppeteer'
 import * as cheerio from 'cheerio'
 import moment from 'moment'
-import { DateUtils } from '../../utils/dateUtils'
 
 const season = process.env.LCK_SEASON as string
 
@@ -51,31 +50,35 @@ export async function crawlingLckMatchResult() {
 export async function crawlingLckMonthSchedule(year: number, month: number) {
   let broser
   try {
-    const date = moment(new Date(year, month)).format('YYYY-MM')
-    const url = `https://game.naver.com/esports/schedule/lck?date=${date}`
+    const date = moment(new Date(year, month-1)).format('YYYY-MM')
+    console.log(date)
+    const url = `https://game.naver.com/esports/schedule/world_championship?date=${date}`
     broser = await puppeteer.launch({
       executablePath: process.env.CHROMIUM_PATH,
       args: ['--no-sandbox'],
     })
     const page = await broser.newPage()
     page.setDefaultNavigationTimeout(0)
-    await Promise.all([page.waitForNavigation({ waitUntil: 'networkidle0' }), page.goto(url)])
+    await Promise.all([page.goto(url), setTimeout(() => {}, 2000)])
 
     const $ = cheerio.load(await page.content())
     const dto = $("[class*='list_wrap__']")
       .children()
       .map((idx, node) => {
         if (node.attribs.class.startsWith('card_item__') && node.attribs['data-time-stamp'] != '') {
-          const date = $(node).find("[class*='card_date__']").text().split(' ')
+          const date: any = $(node).find("[class*='card_date__']").text().split(' ')
+          if (parseInt(date[0].slice(0,2)) != month) {
+            throw new Error('Month not correct error')
+          }
           const matches = $(node)
             .find('ul')
             .children()
             .map((idx, matchNode) => {
-              const startTime = $(matchNode).find("[class*='row_time__']").text().split(':')
+              const startTime: any = $(matchNode).find("[class*='row_time__']").text().split(':')
               const state = $(matchNode).find("[class*='row_state__']").text()
               const team: any = $(matchNode).find("[class*='row_name__']")
               const score: any = $(matchNode).find("[class*='row_score__']")
-
+              
               return {
                 startTime,
                 state,
@@ -86,9 +89,8 @@ export async function crawlingLckMonthSchedule(year: number, month: number) {
               }
             })
             .toArray()
-
           return {
-            date: new Date(year, parseInt(date[0].slice(0, 2)), parseInt(date[1].slice(0, 2))),
+            date: new Date(year, month - 1, parseInt(date[1].slice(0, 2))),
             matches,
           }
         } else {

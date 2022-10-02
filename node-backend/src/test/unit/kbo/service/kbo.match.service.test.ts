@@ -99,9 +99,10 @@ describe('Testing Service Layer - KboMatch', () => {
       mockCrawler.crawlingKboMatchDetail.mockResolvedValue([])
     })
     
+    const matches = [createKboMatchEntity()]
+    const mockDomain = jest.mocked(KboMatch, true)
+
     test('should stop KBO Match update scheduler when flag value is 0', async () => {
-      const mockDomain = jest.mocked(KboMatch, true)
-      const matches = [createKboMatchEntity()]
       mockDomain.findTodayMatches.mockResolvedValue(matches)
       mockDomainService.updateKboMatch.mockResolvedValue(0)
 
@@ -116,8 +117,6 @@ describe('Testing Service Layer - KboMatch', () => {
     })
 
     test('should update match and dont stop scheduler when flag value greater than 0', async () => {
-      const mockDomain = jest.mocked(KboMatch, true)
-      const matches = [createKboMatchEntity()]
       mockDomain.findTodayMatches.mockResolvedValue(matches)
       mockDomainService.updateKboMatch.mockResolvedValue(1)
 

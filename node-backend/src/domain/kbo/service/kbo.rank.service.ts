@@ -2,11 +2,11 @@ import { MysqlDateSource } from "@/config/config.db"
 import { KboRank } from "../domain/model/kboRank"
 import { Team } from "../domain/model/vo/kbo.vo"
 import { findKboRankOrderByAsc, updateKboRanking } from "../domain/service/kboRank.service"
-import { crawlingKboTeamRanking } from "../infra/kbo.crawling"
+import { crawlingKboRanking } from "../infra/kbo.crawling"
 import { KboRankGetResDto } from "../utils/kbo.dto"
 
 export async function putKboTeamRank() {
-  const ranking = await crawlingKboTeamRanking()
+  const ranking = await crawlingKboRanking()
   const qr = MysqlDateSource.createQueryRunner()
   qr.connect()
 

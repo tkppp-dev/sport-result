@@ -12,9 +12,9 @@ export async function deleteMonthlyKboSchedule(
   await repository
     .createQueryBuilder()
     .delete()
-    .where('matchDatetime >= :start and matchDatetime <= :end', {
+    .where('matchDatetime >= :start and matchDatetime < :end', {
       start: DateUtils.getDatetime({ year, month, day: 1 }),
-      end: DateUtils.getDatetime({ year, month: month + 1, day: 0 }),
+      end: DateUtils.getDatetime({ year, month: month + 1, day: 1 }),
     })
     .execute()
 }
@@ -51,7 +51,7 @@ export async function updateKboMatch(
   currentMatchDetails: KboMatchDetail[]
 ): Promise<0 | 1> {
   if (match.matchProgress === '경기취소' || match.matchProgress === '종료') {
-    return 1
+    return 0
   } else {
     for (let matchDetail of currentMatchDetails) {
       if (matchDetail.matchProgress === '경기전') continue
@@ -65,5 +65,5 @@ export async function updateKboMatch(
       }
     }
   }
-  return 0
+  return 1
 }

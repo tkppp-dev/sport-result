@@ -2,7 +2,8 @@
   <div class="lck-match-wrapper">
     <div class="lck-match-item-wrapper" v-for="(match, idx) in matches" :key="idx">
       <left-team class="lck-match-item" :teamName="match.home" :score="match.homeScore" />
-      <div class="lck-match-item lck-match-state">{{match.state}}</div>
+      <div v-if="match.state != '예정'" class="lck-match-item lck-match-state">{{match.state}}</div>
+      <div v-else class="lck-match-item lck-match-time">{{match.startTime}}</div>
       <right-team class="lck-match-item" :teamName="match.away" :score="match.awayScore" />
     </div>
   </div>
@@ -15,7 +16,7 @@ export default {
   components: { LeftTeam, RightTeam },
   props: {
     matches: Object
-  }
+  },
 };
 </script>
 
@@ -39,5 +40,10 @@ export default {
   font-size: 15px;
   font-weight: bold;
   color: rgb(206, 55, 49);
+}
+
+.lck-match-time {
+  font-size: 14px;
+  font-weight: bold;
 }
 </style>

@@ -10,12 +10,13 @@ import { config } from 'dotenv'
 config()
 import { bootstrapLogger, getLogger } from './utils/loggers'
 bootstrapLogger()
-import setupLoader from './loaders/loader'
+import { setupLoader } from './loaders'
 setupLoader().then(() => {})
 
 // route
 import KboRouter from './domain/kbo/ui/kbo.controller'
 import LckRouter from '@/domain/lck/lck.controller'
+import LolRouter from '@/domain/lol/ui/lol.controller'
 
 class App {
   public app: express.Application
@@ -38,6 +39,7 @@ class App {
   private routerSetup() {
     this.app.use('/api/kbo', KboRouter)
     this.app.use('/api/lck', LckRouter)
+    this.app.use('/api/lol', LolRouter)
   }
 
   private errorConfig() {
@@ -66,4 +68,4 @@ app.listen(port, () => {
   logger.info('server launched at port', port)
 })
 
-export default app
+export { app }

@@ -1,7 +1,7 @@
 import express from 'express';
 import { getKboDayMatches, putKboMonthSchedule } from '../service/kbo.match.service';
 import { MessageDto } from '@/utils/default.dto';
-import { getKboTeamRank } from '../service/kbo.rank.service';
+import { getKboTeamRank, putKboTeamRank } from '../service/kbo.rank.service';
 
 const router = express.Router();
 
@@ -15,6 +15,11 @@ router.put('/schedule', async (req, res, next) => {
   const month = parseInt(req.query.month as string)
   await putKboMonthSchedule(year, month)
   res.json(new MessageDto(`KBO ${year}-${month} 스케줄 업데이트 성공`))
+})
+
+router.put('/rank', async (req, res, next) => {
+  await putKboTeamRank()
+  res.json(new MessageDto('KBO 랭킹 업데이트 성공'))
 })
 
 router.get('/rank', async (req, res, next) => {

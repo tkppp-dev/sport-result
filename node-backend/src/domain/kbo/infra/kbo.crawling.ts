@@ -46,22 +46,20 @@ export async function crawlingKboMatchDetail(): Promise<KboMatchDetail[]> {
   return matches
 }
 
-export async function crawlingKboTeamRanking() {
-  const url = 'https://sports.news.naver.com/kbaseball/index'
+export async function crawlingKboRanking() {
+  const url = 'https://sports.news.naver.com/kbaseball/record/index?category=kbo'
   const html = await axios.get(url)
   const $ = cheerio.load(html.data)
 
-  const teamRankHtml = $('#rank_template1').children()
-  const rankData = $(teamRankHtml)
-    .find('.kbo tbody')
-    .children()
+  const rankHtml = $('#regularTeamRecordList_table')
+  const rankData = $(rankHtml).children()
     .map((idx, node) => {
-      const name = $(node).find('.name').text()
+      const name = $(node).find('td:nth-child(2) span').text().trim()
       const played = $(node).find('td:nth-child(3) span').text()
       const win = $(node).find('td:nth-child(4) span').text()
-      const draw = $(node).find('td:nth-child(5) span').text()
-      const defeat = $(node).find('td:nth-child(6) span').text()
-      const winRate = $(node).find('td:nth-child(7) span').text()
+      const defeat = $(node).find('td:nth-child(5) span').text()
+      const draw = $(node).find('td:nth-child(6) span').text()
+      const winRate = $(node).find('td:nth-child(7)').text()
       const gameDiff = $(node).find('td:nth-child(8) span').text()
 
       return {
@@ -74,10 +72,9 @@ export async function crawlingKboTeamRanking() {
         winRate: parseFloat(winRate),
         gameDiff: parseFloat(gameDiff),
       }
-    })
-    .toArray()
+    }).toArray()
 
-  return rankData
+    return rankData
 }
 
 export async function crawlingKboSchedule(year: number, month: number): Promise<KboSchedule[]> {

@@ -88,13 +88,13 @@ describe('Testing Domain Service - KboMatch', () => {
     const suit2 = ['1회초' , "1회말" , "2회초" , "2회말", "3회초" , "3회말" , "4회초" , "4회말", "5회초" , "5회말" , 
     "6회초" , "6회말", "7회초" , "7회말" , "8회초", "8회말" , "9회초" , "9회말" , "10회초" , "10회말" , "11회초" , 
     "11회말" , "12회초" , "12회말" , "경기전"]
-    test('should return 1 when matchProgress is "경기취소" or "종료"', async () => {      
+    test('should return 0 when matchProgress is "경기취소" or "종료"', async () => {      
       suit1.map(async (matchProgress) => {
         match.matchProgress = matchProgress as MatchProgress
         // when
         let result = await updateKboMatch(match, [])
         // then
-        expect(result).toBe(1)
+        expect(result).toBe(0)
       })
     })
 
@@ -105,7 +105,7 @@ describe('Testing Domain Service - KboMatch', () => {
         // when
         let result = await updateKboMatch(match, [])
         // then
-        expect(result).toBe(0)
+        expect(result).toBe(1)
       })
     })
 

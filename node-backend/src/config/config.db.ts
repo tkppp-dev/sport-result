@@ -1,3 +1,4 @@
+import { LolMatch } from "@/domain/lol/domain/model/lol.match";
 import { DataSource } from "typeorm";
 import { KboMatch } from "../domain/kbo/domain/model/kboMatch";
 import { KboRank } from '../domain/kbo/domain/model/kboRank';
@@ -22,7 +23,7 @@ export const MysqlDateSource = new DataSource({
   username,
   password,
   database: 'sport_result',
-  entities: [KboMatch, KboRank, LckMatch],
+  entities: [KboMatch, KboRank, LckMatch, LolMatch],
   synchronize,
   logging
 })

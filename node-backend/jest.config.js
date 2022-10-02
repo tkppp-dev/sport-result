@@ -7,6 +7,9 @@ module.exports = {
       useESM: true,
     },
   },
-  setupFiles: ['<rootDir>/src/test/helpers/testLoader.ts'],
+  setupFiles: [
+    '<rootDir>/src/test/helpers/testLoader.ts',
+  ],
+  coveragePathIgnorePatterns: ['<rootDir>/src/test'],
   moduleNameMapper: { '@/(.*)$': '<rootDir>/src/$1' },
 }

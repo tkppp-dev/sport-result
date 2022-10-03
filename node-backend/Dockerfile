@@ -31,8 +31,9 @@ ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
 ENV CHROMIUM_PATH /usr/bin/chromium-browser
    
 # Only copy the package.json file to work directory
-COPY package.json .
+COPY . .
 RUN npm install
+RUN npm install --global pm2
 
 # Docker Demon Port Mapping
 EXPOSE 80

@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import Kbo from "../views/Kbo.vue";
 import Nba from '../views/Nba.vue'
 import Lck from '../views/Lck.vue'
+import Admin from '../views/Admin.vue'
 import { nextTick } from "vue";
 
 const baseName = 'Sport Result'
@@ -29,6 +30,14 @@ const routes = [
     component: Lck,
     meta: {
       title: baseName + ' - LCK'
+    }
+  }, 
+  {
+    path: '/admin',
+    name: 'Admin',
+    component: Admin,
+    meta: {
+      title: baseName + ' - ADMIN'
     }
   }
 ];

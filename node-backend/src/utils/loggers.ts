@@ -1,22 +1,32 @@
-import path from 'path';
-import log4js from 'log4js';
-import { configure } from 'log4js';
-export { getLogger } from 'log4js';
+import path from 'path'
+import log4js from 'log4js'
+import { configure } from 'log4js'
+import { DateUtils } from './dateUtils'
+export { getLogger } from 'log4js'
 
 export function bootstrapLogger() {
-  const date = new Date();
-  const strDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+  const date = new Date()
+  const dateString = DateUtils.parseDateString(date)
 
   configure({
     appenders: {
       out: { type: 'stdout' },
-      app: { type: 'file', filename: path.join(__dirname, '..', 'logs', `${strDate}.log`) }
+      app: { type: 'dateFile', filename: path.join(__dirname, '..', 'logs', `${dateString}.log`) },
+      errorFile: {
+        type: 'dateFile',
+        filename: path.join(__dirname, '..', 'logs', `${dateString}-error.log`),
+      },
+      errors: {
+        type: 'logLevelFilter',
+        level: 'ERROR',
+        appender: 'errorFile',
+      },
     },
     categories: {
-      default: { appenders: ['out', 'app'], level: 'debug' }
-    }
-  });
+      default: { appenders: ['out', 'app', 'errors'], level: 'debug' },
+    },
+  })
 
-  const logger = log4js.getLogger();
-  logger.level = 'debug';
+  const logger = log4js.getLogger()
+  logger.level = 'debug'
 }

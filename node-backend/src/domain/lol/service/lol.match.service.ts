@@ -36,10 +36,8 @@ export async function putLolMontlySchedule(year: number, month: number) {
 export async function patchLolTodayMatches() {
   const matches = await crawlingLolTodayMatches()
   const matchEntities = await findLolTodayMatches()
-  let cnt = 0
 
   for (let match of matches) {
-    if (match.state === '종료' || match.state === '취소' || match.state === '경기취소') cnt++
     for (let entity of matchEntities) {
       if (entity.home === match.home && entity.away === match.away) {
         await updateTodayLolMatch(entity, match)
@@ -48,9 +46,16 @@ export async function patchLolTodayMatches() {
     }
   }
 
-  if (cnt === matches.length) {
+  let flag = false
+  for (let entity of matchEntities) {
+    if (!(entity.matchProgress == '종료' || entity.matchProgress === '취소' || entity.matchProgress === '경기취소')) {
+      flag = true
+      break
+    }
+  }
+  if (!flag) {
     app.locals[JobType.LolMatch].cancel()
-    logger.info('LOL 매치 업데이트 스케줄러 중단')
+    logger.info('LOL 매치 스케줄러 중단')
   }
 }
 

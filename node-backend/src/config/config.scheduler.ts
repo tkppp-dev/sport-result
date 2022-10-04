@@ -17,7 +17,7 @@ export enum JobType {
 }
 
 export async function setupDefaultScheduler() {
-  const cron = '0 0 6 * * *'
+  const cron = '0 0 2 * * *'
   scheduleJob(cron, async function () {
     logger.info('정기 스케줄링 실행')
     await tearDownSchedulers()
